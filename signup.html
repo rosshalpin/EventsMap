@@ -1,98 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link href="EventMap.css" rel="stylesheet"/>
-<link rel="stylesheet" href="animations.css">
-<script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
-<script src="jquery-3.2.1.min.js"></script>
-<script src="scripts.js"></script>
-
-<script src="signup.js"></script>
-
+    <link href="css/EventMap.css" rel="stylesheet"/>
+    <link href="css/animations.css" rel="stylesheet"/>
+    <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="included/fbc.inc.js"></script>
+    <script src="scripts/animation.js"></script>
 </head>
+
 <body>
-<div id="main">
-
-<div id = "border">
-<h1> Welcome to EventMap</h1>
-
-
-</div>
-
-
-
-
-
-
-
-
-<div id="login-box" class = "hidden">
-<div id="object" class="slideRight">
-  <div class="left">
-    <img src="EventMapLogo.png" id="logo">
-
-	<!--<button id="S1" >Sign Up</button> <button id="L1">Login</button> -->
-
-	
-      <ul class='ul_tabs'>
-        <li id="S1"class="active2"><a href="#" >Sign Up</a><span class="line"></span> </li>
-		
-        <li id="L1"><a href="#up">Login</a><span class="line"></span></li>
-		
-      </ul>
-	
-	
-
-
-<div class="L">
-<div id ="signup">
-    <input type="text" name="username" placeholder="Username" id = "txtName"/>
-    <input type="text" name="email" placeholder="E-mail" id="txtEmail"/>
-    <input type="password" name="password" placeholder="Password" id="txtPassword"/>
-    <input type="password" name="password2" placeholder="Retype password" id="txtPassword2" />
-    
-    <input  onclick="adduser()"type="submit" name="signup_submit" value="Create Account" id="btnSignUp"/>
-
-
-   <!--<button class="button" onlclick = "login">Email Sign In</button>-->
-</div>
-<div id="log" class = "hidden">
-
-<input type="text" name="email" placeholder="E-mail" id="logEmail"/>
-<input type="password" name="password" placeholder="Password" id="logPassword"/>
-<p id = "forgot">Forgot Password?</p></br>
-
-<input onclick="loguser()" type="submit" name="signin_submit" value="Sign In" id = "btnLogin" />
-
-
-</div>
-</div>
-  </div>
-  </div>
-
-  <div class="or">OR</div>
-  
-  
-  
-  <div id="object" class="slideLeft">
-  <div class="right">
-    <span class="loginwith">Sign in with<br /> Google</span>
-    
-
-   <button class="loginBtn loginBtn--google">
-  Sign in with Google
-</button>
-
-  </div>
-</div>
-
-</div>
-
-
-</div>
-
-
-
+    <div id="main">
+        <div id = "border">
+            <h1> Welcome to EventMap</h1>
+        </div>
+    <div id="login-box" class = "hidden">
+        <div id="object" class="slideRight">
+            <div class="left">
+                <img src="images/EventMapLogo.png" id="logo">
+                <ul class='ul_tabs'>
+                    <li id="S1"class="active2"><a href="#" >Sign Up</a><span class="line"></span> </li>
+                    <li id="L1"><a href="#up">Login</a><span class="line"></span></li>
+                </ul>
+                <div class="L">
+                    <div id ="signup">
+                        <input type="text" placeholder="Username" id= "StxtName"/>
+                        <input type="text" placeholder="E-mail" id="StxtEmail"/>
+                        <input type="password" placeholder="Password" id="StxtPassword1"/>
+                        <input type="password" placeholder="Retype password" id="StxtPassword2" />
+                        <button class="slbtn" id="btnSignUp" class="btn btn-action hide">Create Account</button>
+                        <!--<button id="btnLogout" class="btn btn-secondary">Logout</button>-->
+                    </div>
+                    <div id="log" class = "hidden">
+                        <input type="text" placeholder="E-mail" id="LtxtEmail"/>
+                        <input type="password" placeholder="Password" id="LtxtPassword"/>
+                        <p id = "forgot">Forgot Password?</p></br>
+                        <button class="slbtn" id="btnLogin" class="btn btn-action hide">Login</button>
+                    </div>
+                </div>
+          </div>
+      </div>
+      <div class="or">OR</div>
+          <div id="object" class="slideLeft">
+              <div class="right">
+                <span class="loginwith">Sign in with<br /> Google</span>
+                <button class="loginBtn loginBtn--google">Sign in with Google</button>
+              </div>
+          </div>
+        </div>
+    </div>
 </body>
+    <script src="scripts/login.signup.js"></script>
 </html>
-
