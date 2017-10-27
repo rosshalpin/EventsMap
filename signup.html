@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="EventMap.css" rel="stylesheet"/>
+<link rel="stylesheet" href="animations.css">
+<script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
+<script src="jquery-3.2.1.min.js"></script>
+<script src="scripts.js"></script>
+
+<script src="signup.js"></script>
+
+</head>
+<body>
+<div id="main">
+
+<div id = "border">
+<h1> Welcome to EventMap</h1>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div id="login-box" class = "hidden">
+<div id="object" class="slideRight">
+  <div class="left">
+    <img src="EventMapLogo.png" id="logo">
+
+	<!--<button id="S1" >Sign Up</button> <button id="L1">Login</button> -->
+
+	
+      <ul class='ul_tabs'>
+        <li id="S1"class="active2"><a href="#" >Sign Up</a><span class="line"></span> </li>
+		
+        <li id="L1"><a href="#up">Login</a><span class="line"></span></li>
+		
+      </ul>
+	
+	
+
+
+<div class="L">
+<div id ="signup">
+    <input type="text" name="username" placeholder="Username" id = "txtName"/>
+    <input type="text" name="email" placeholder="E-mail" id="txtEmail"/>
+    <input type="password" name="password" placeholder="Password" id="txtPassword"/>
+    <input type="password" name="password2" placeholder="Retype password" id="txtPassword2" />
+    
+    <input  onclick="adduser()"type="submit" name="signup_submit" value="Create Account" id="btnSignUp"/>
+
+
+   <!--<button class="button" onlclick = "login">Email Sign In</button>-->
+</div>
+<div id="log" class = "hidden">
+
+<input type="text" name="email" placeholder="E-mail" id="logEmail"/>
+<input type="password" name="password" placeholder="Password" id="logPassword"/>
+<p id = "forgot">Forgot Password?</p></br>
+
+<input onclick="loguser()" type="submit" name="signin_submit" value="Sign In" id = "btnLogin" />
+
+
+</div>
+</div>
+  </div>
+  </div>
+
+  <div class="or">OR</div>
+  
+  
+  
+  <div id="object" class="slideLeft">
+  <div class="right">
+    <span class="loginwith">Sign in with<br /> Google</span>
+    
+
+   <button class="loginBtn loginBtn--google">
+  Sign in with Google
+</button>
+
+  </div>
+</div>
+
+</div>
+
+
+</div>
+
+
+
+</body>
+</html>
+
