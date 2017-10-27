@@ -1,0 +1,326 @@
+*:focus {
+  outline: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #DDD;
+  font-size: 16px;
+  color: #222;
+  font-family: Helvetica;
+  font-weight: 300;
+}
+#main {
+    margin: auto;
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background-repeat: no-repeat;
+    background-image: url('../images/map_image.jpg');
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+
+}
+
+#logo{
+	position:center;
+	height:180px;
+	width:180px;
+	margin-right:45px;
+	padding-left:100px;
+	}
+
+#login-box {
+   z-index: 999;
+  position: relative;
+  margin:5% auto;
+  margin-top: 190px;
+  width: 900px;
+  height: 600px;
+  background: #FFF;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  text-align:center;
+}
+
+.left {
+  position: absolute;
+
+  box-sizing: border-box;
+  padding-top: 20px;
+  padding-left:10px;
+  padding-right:60px;
+  padding-bottom:60px;
+  width: 450px;
+  height: 600px;
+}
+
+
+
+
+input[type="text"],
+input[type="password"] {
+  display: block;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  padding: 4px;
+  width: 220px;
+  height: 32px;
+  border: none;
+  border-bottom: 1px solid #AAA;
+  font-family: Helvetica;
+  font-weight: 400;
+  font-size: 15px;
+  transition: 0.2s ease;
+
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-bottom: 2px solid #16a085;
+  color: #16a085;
+  transition: 0.2s ease;
+}
+
+.slbtn{
+  margin-top: 28px;
+  margin-right:60px;
+  width: 150px;
+  height: 32px;
+  background: #16a085;
+  border: none;
+  border-radius: 2px;
+  color: #FFF;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  transition: 0.1s ease;
+  cursor: pointer;
+
+}
+
+.slbtn:hover,
+.slbtn:focus {
+  opacity: 0.8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: 0.1s ease;
+}
+
+.slbtn:active {
+  opacity: 1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  transition: 0.1s ease;
+}
+
+.or {
+  position: absolute;
+  top: 250px;
+  left: 430px;
+  width: 40px;
+  height: 40px;
+  background: #DDD;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  line-height: 40px;
+  text-align: center;
+  z-index:99;
+}
+
+
+
+.right {
+
+position: absolute;
+  top: 0;
+  right: 0;
+  box-sizing: border-box;
+  padding: 40px;
+  width: 450px;
+  height: 600px;
+  background: url('../images/right-backgroud.jpg');
+  background-size: cover;
+  background-position: center;
+  border-radius: 0 2px 2px 0;
+}
+
+.right .loginwith {
+
+  display: block;
+  margin-bottom: 40px;
+  font-size: 28px;
+  color: #FFF;
+  text-align: center;
+  color: black;
+}
+
+
+
+#border{
+
+	width: 100%;
+	z-index: 10;
+	position: fixed;
+height: 100px;
+	top: 0px;
+	text-align:center;
+	padding-top:20px;
+
+
+  margin: 0 0 20px 0;
+  font-weight: 300;
+  font-size: 28px;
+}
+
+
+
+
+.loginBtn {
+  box-sizing: border-box;
+  position: relative;
+  width: 13em;
+  margin: 0.2em;
+  padding: 0 15px 0 46px;
+  border: none;
+  text-align: left;
+  line-height: 35px;
+  white-space: nowrap;
+  border-radius: 0.1em;
+  font-size: 16px;
+  color: #FFF;
+
+}
+.loginBtn:before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 100%;
+}
+.loginBtn:focus {
+  outline: none;
+}
+.loginBtn:active {
+  box-shadow: inset 0 0 0 32px rgba(0,0,0,0.1);
+}
+
+
+.loginBtn--google {
+
+  background: #DD4B39;
+}
+.loginBtn--google:before {
+
+  border-right: #BB3F30 1px solid;
+  background: Url('../images/g-logo.png')  transparent  1px 50% no-repeat;
+    background-size:contain;
+	height:34px;
+
+}
+.loginBtn--google:hover,
+.loginBtn--google:focus {
+  background: #E74B37;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: 0.2s ease;
+}
+
+.hidden{
+	display:none;
+}
+
+#forgot{
+  border:0;
+  outline:none;
+  font-family: Georgia;
+  color: #16a085;
+  font-size: 10px;
+  text-align:right;
+  text-transform: uppercase;
+  transition: 0.1s ease;
+  cursor: pointer;
+  background:transparent;
+}
+#forgot:hover,
+#forgot:focus{
+	  opacity: 0.8;
+
+  transition: 0.1s ease;
+  color:red;
+}
+
+#forgot:active{
+  opacity: 1;
+
+  transition: 0.1s ease;
+}
+
+.L{
+	padding-left:100px;
+}
+
+ul {
+    list-style-type: none;
+    margin-left:0;
+    padding:10;
+    overflow: hidden;
+
+}
+
+
+li {
+position: relative;
+  float: left;
+  width: 50%;
+  list-style: none;
+  text-align: center;
+}
+
+
+li a {
+text-decoration: none;
+font-family: Helvetica;
+font-size: 16px;
+    color:black;
+line-height: 14px;
+padding: 20px ;
+display: block;
+transition: all 0.5s;
+}
+
+
+#S1{
+	float:left;
+	font-size:20px;
+
+}
+#L1{
+	padding-left:px;
+	font-size:20px;
+}
+
+
+.line {
+  position: relative;
+  width: 100%;
+  float: left;
+  background-color: #FFA6A6;
+  height: 2px;
+}
+
+.active2 {
+
+	background-color: #FFA6A6;
+
+}
+
+
+#object{
+	background-color: #fe5652;
+
+	visibility: hidden;
+}
