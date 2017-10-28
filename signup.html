@@ -5,8 +5,13 @@
     <link href="css/animations.css" rel="stylesheet"/>
     <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-scope" content="https://www.googleapis.com/auth/plus.login" />
+    <meta name="google-signin-client_id" content="640024775083-mn2gt40oe50gicmumf4aqnvbb98pkmsu.apps.googleusercontent.com"/>
+    <script src="scripts/login.signup.js" defer></script>
     <script src="included/fbc.inc.js"></script>
     <script src="scripts/animation.js"></script>
+    <script src="scripts/googlelogin.js"></script>
 </head>
 
 <body>
@@ -29,7 +34,8 @@
                         <input type="password" placeholder="Password" id="StxtPassword1"/>
                         <input type="password" placeholder="Retype password" id="StxtPassword2" />
                         <button class="slbtn" id="btnSignUp" class="btn btn-action hide">Create Account</button>
-                        <!--<button id="btnLogout" class="btn btn-secondary">Logout</button>-->
+                        <!--Logout button only here for testing.
+                        <button id="btnLogout" class="btn btn-secondary">Logout</button>-->
                     </div>
                     <div id="log" class = "hidden">
                         <input type="text" placeholder="E-mail" id="LtxtEmail"/>
@@ -44,11 +50,11 @@
           <div id="object" class="slideLeft">
               <div class="right">
                 <span class="loginwith">Sign in with<br /> Google</span>
-                <button class="loginBtn loginBtn--google">Sign in with Google</button>
+                <!--"g-sigin2" class need for the google button to work. It must also be kept as a div, when the tag is changed to a btn it doesn't work.-->
+                <div class="g-signin2" data-width="contain" data-onsuccess="onSignIn"></div>
               </div>
           </div>
         </div>
     </div>
 </body>
-    <script src="scripts/login.signup.js"></script>
 </html>
