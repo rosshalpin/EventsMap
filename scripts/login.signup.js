@@ -18,16 +18,26 @@ btnLogin.addEventListener('click', e => {
 //This checks if the user is logged in
 firebase.auth().onAuthStateChanged(firebaseUser => {
     if(firebaseUser){
-        console.log(firebaseUser.email);
+        auth2 = gapi.auth2.init({
+        client_id: '640024775083-mn2gt40oe50gicmumf4aqnvbb98pkmsu.apps.googleusercontent.com',
+        });
+        if(auth2.isSignedIn.get()){
+            var profile = auth2.currentUser.get().getBasicProfile();
+            save(profile);
+            console.log(profile.getName()+" logged in");
+        }else{
+            console.log("GoogleUser not sign in.")
+            console.log(firebaseUser.email);
+        }
     }else{
         console.log("Not logged in");
     }
 })
 
-/*This will log the user out
+//This will log the user out
 btnLogout.addEventListener('click', e => {
     firebase.auth().signOut();
-});*/
+});
 
 var user = firebase.auth().currentUser;
 btnSignUp.addEventListener('click',e =>{
@@ -52,3 +62,13 @@ btnSignUp.addEventListener('click',e =>{
     console.log("Passwords don't match");
 }
 });
+
+function save(profile){
+    var firebaseRef = firebase.database().ref();
+    firebaseRef.child("Users").child(profile.getId()).child("Full_Name").set(profile.getName());
+    firebaseRef.child("Users").child(profile.getId()).child("First_Name").set(profile.getGivenName());
+    firebaseRef.child("Users").child(profile.getId()).child("Last_Name").set(profile.getFamilyName());
+    firebaseRef.child("Users").child(profile.getId()).child("Image_URL").set(profile.getImageUrl());
+    firebaseRef.child("Users").child(profile.getId()).child("Email").set(profile.getEmail());
+
+}
