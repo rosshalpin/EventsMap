@@ -23,13 +23,13 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
         });
         if(auth2.isSignedIn.get()){
             var profile = auth2.currentUser.get().getBasicProfile();
+            //send profile to save function.
             save(profile);
-            console.log(profile.getName()+" logged in");
-        }else{
-            console.log("GoogleUser not sign in.")
-            console.log(firebaseUser.email);
         }
+        //print to console user is sign in
+        console.log(firebaseUser.email+" logged in");
     }else{
+        //print to console when nobody is signed in
         console.log("Not logged in");
     }
 })
@@ -62,9 +62,19 @@ btnSignUp.addEventListener('click',e =>{
     console.log("Passwords don't match");
 }
 });
-
+//save function used to save information to database.
 function save(profile){
+    //create connection to database.
     var firebaseRef = firebase.database().ref();
+    /*Values will be save to database like
+            -User:
+                -ID:"f1s9df65s1df":
+                    -Full_Name: "John Doe",
+                    -First_Name: "John",
+                    -Last_Name: "Doe",
+                    -Image_URL: "https://example.com/etc",
+                    -Email: "johndoe@gmail.com"
+    */
     firebaseRef.child("Users").child(profile.getId()).child("Full_Name").set(profile.getName());
     firebaseRef.child("Users").child(profile.getId()).child("First_Name").set(profile.getGivenName());
     firebaseRef.child("Users").child(profile.getId()).child("Last_Name").set(profile.getFamilyName());
