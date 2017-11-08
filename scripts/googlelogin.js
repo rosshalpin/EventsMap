@@ -14,5 +14,6 @@ function GoogleSignIn(googleUser) {
   var errorMessage = error.message;
   var email = error.email;
   var credential = error.credential;
+  console.log(errorMessage);
 });
 }
