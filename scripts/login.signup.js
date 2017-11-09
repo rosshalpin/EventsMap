@@ -66,6 +66,7 @@ btnSignUp.addEventListener('click',e =>{
 function save(profile){
     //create connection to database.
     var firebaseRef = firebase.database().ref();
+    var uid = firebase.auth().currentUser.uid;
     /*Values will be save to database like
             -User:
                 -ID:"f1s9df65s1df":
@@ -75,10 +76,10 @@ function save(profile){
                     -Image_URL: "https://example.com/etc",
                     -Email: "johndoe@gmail.com"
     */
-    firebaseRef.child("Users").child(profile.getId()).child("Full_Name").set(profile.getName());
-    firebaseRef.child("Users").child(profile.getId()).child("First_Name").set(profile.getGivenName());
-    firebaseRef.child("Users").child(profile.getId()).child("Last_Name").set(profile.getFamilyName());
-    firebaseRef.child("Users").child(profile.getId()).child("Image_URL").set(profile.getImageUrl());
-    firebaseRef.child("Users").child(profile.getId()).child("Email").set(profile.getEmail());
+    firebaseRef.child("Users").child(uid).child("Full_Name").set(profile.getName());
+    firebaseRef.child("Users").child(uid).child("First_Name").set(profile.getGivenName());
+    firebaseRef.child("Users").child(uid).child("Last_Name").set(profile.getFamilyName());
+    firebaseRef.child("Users").child(uid).child("Image_URL").set(profile.getImageUrl());
+    firebaseRef.child("Users").child(uid).child("Email").set(profile.getEmail());
 
 }
