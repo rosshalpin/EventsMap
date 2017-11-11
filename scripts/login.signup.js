@@ -29,7 +29,9 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
             if(auth2.isSignedIn.get()){
                 //sends the Users profile to be saved in the database
                 var UserProfile = auth2.currentUser.get().getBasicProfile();
-                save(UserProfile);
+                console.log(UserProfile);
+                //Send the object to the save function to save User information to the database
+                save(UserProfile,"google");
                 //Prints to console log who has signed in and the method they used
                 console.log(UserProfile.getName()+" has signed in with Google.");
             }else{
@@ -69,30 +71,24 @@ btnSignUp.addEventListener('click',e =>{
     if(pass1==pass2){
         auth.createUserWithEmailAndPassword(email,pass1).then(function(user){
             var obj = {
-                uid: firebase.auth().currentUser.uid,
-                firstname: firstname,
-                lastname: lastname,
-                email: email
+                ig: firstname+" "+lastname,
+                ofa: firstname,
+                wea: lastname,
+                U3: email
             };
-            manualsave(obj);
+            //Send object to function to save User information to the database
+            save(obj,"email");
         }).catch(function(error){
 
-            console.log("Error");
+            console.log(error.message);
         });
-
-        /*
-        //if passwords match then account will be created
-        const promise = auth.createUserWithEmailAndPassword(email,pass1);
-        //if unsuccessful print error to console log
-        promise.catch(e => console.log(e.message));
-        */
     }else{
     //if passwords don't match a message will be printed to console log
     console.log("Passwords don't match");
-}
+    }
 });
 //save function used to save information to database.
-function save(profile){
+function save(profile,type){
     var uid = firebase.auth().currentUser.uid;
     /*Values will be save to database like
             -User:
@@ -103,26 +99,12 @@ function save(profile){
                     -Image_URL: "https://example.com/etc",
                     -Email: "johndoe@gmail.com"
     */
-    firebaseRef.child("Users").child(uid).child("Full_Name").set(profile.getName());
-    firebaseRef.child("Users").child(uid).child("First_Name").set(profile.getGivenName());
-    firebaseRef.child("Users").child(uid).child("Last_Name").set(profile.getFamilyName());
-    firebaseRef.child("Users").child(uid).child("Image_URL").set(profile.getImageUrl());
-    firebaseRef.child("Users").child(uid).child("Email").set(profile.getEmail());
-
-}
-
-function manualsave(obj){
-    /*Values will be save to database like
-            -User:
-                -ID:"f1s9df65s1df":
-                    -Full_Name: "John Doe",
-                    -First_Name: "John",
-                    -Last_Name: "Doe",
-                    -Email: "johndoe@gmail.com"
-    */
-    firebaseRef.child("Users").child(obj.uid).child("Full_Name").set(obj.firstname+" "+obj.lastname);
-    firebaseRef.child("Users").child(obj.uid).child("First_Name").set(obj.firstname);
-    firebaseRef.child("Users").child(obj.uid).child("Last_Name").set(obj.lastname);
-    firebaseRef.child("Users").child(obj.uid).child("Email").set(obj.email);
-    console.log("Saved");
+    firebaseRef.child("Users").child(uid).child("Full_Name").set(profile.ig);
+    firebaseRef.child("Users").child(uid).child("First_Name").set(profile.ofa);
+    firebaseRef.child("Users").child(uid).child("Last_Name").set(profile.wea);
+    firebaseRef.child("Users").child(uid).child("Email").set(profile.U3);
+    //if the user signs up with google the profile picture will be added to the database too.
+    if(type==="google"){
+        firebaseRef.child("Users").child(uid).child("Image_URL").set(profile.Paa);
+    }
 }
