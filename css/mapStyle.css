@@ -1,0 +1,102 @@
+#friends {
+    box-shadow:0px 0px 10px 0px rgba(0,0,0,0.25);
+    height:100%;
+    background-color:rgba(255, 255, 255, 0.9);;
+    position:fixed;
+    top:0;
+    right:-300px;
+    width:300px;
+	z-index: 2;
+}
+
+#friends.menu-open {
+    right:0;
+}
+
+canvas:active{
+	cursor: pointer;
+}
+
+.controls.menu-open {
+	right:320px; 
+}
+
+.controls{
+	position: fixed;
+	z-index: 2;
+	top: 20px;
+	right: 20px;
+	box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.25);
+}
+
+.distance{
+	position: fixed;
+	z-index: 2;
+	bottom: 0;
+	left: 20px;
+}
+
+body { 
+	overflow: hidden;
+	margin:0;
+}
+
+.image-content {
+	width: 100%;
+	background-color: #E5E3DF;
+	height: 100%;
+	z-index: 1;
+}
+
+#layer2{
+	background-color: transparent;
+}
+
+.btn{
+	background-color: white;
+	border: none;
+	color: #747474;
+	font-size: 20px;
+	display: block;
+	outline: none;
+	height: 30px;
+	width: 30px;
+	cursor: pointer;
+	font-weight: bold;
+	opacity: 0.7;
+	-webkit-appearance: none;
+	-webkit-border-radius: 0;
+	text-align: center;
+}
+
+#dist{
+	font-size: 20px;
+	color: #747474;
+}
+input[value="-"]{
+	padding-bottom: 3px;
+}
+
+input[value="+"]{
+	padding-top: 3px;
+}
+
+input:hover, button:hover{
+	color: #333333;
+	opacity: 0.9;
+}
+
+#zoomButton, #nav-toggle { 
+	border-bottom:solid #E6E6E6 1px; 
+}
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (orientation : portrait) { 
+	.btn {
+		height: 100px;
+		width: 100px;
+		font-size: 20px;
+	}
+	.controls {
+		right: 3%;
+	}
+}
