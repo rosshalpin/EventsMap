@@ -1,33 +1,53 @@
 <!DOCTYPE HTML>
 <html>
-<body bgcolor="#E5E3DF">
-	<link rel="stylesheet" type="text/css" href="css/mapStyle.css">
-	<div id="friends" >
-	<p style="margin-left:10px;">hello world!</p>
-	</div>
-	<div class="controls">
-		<input class="btn" id="nav-toggle" type="button" value="☰">
-		<input class="btn" id="zoomButton"  type="button" value="+">
-		<input class="btn" id="resetButton" type="button" value="-">
-	</div>
-	<div class="distance">
-		<p id="dist">m</p>
-	</div>
-	
-	<div class="image-content">
-		<div class="panzoom" id="pnz">
-			<canvas id="layer4" width="2000" height="2000" style="position: absolute; left: 0; top: 0; z-index: 4;"></canvas>
-			<canvas id="layer3" width="2000" height="2000" style="position: absolute; left: 0; top: 0; z-index: 2;"></canvas>
-			<canvas id="layer2" width="2000" height="2000" style="position: absolute; left: 0; top: 0; z-index: 3;"></canvas>
-			<canvas id="layer1" width="2000" height="2000" style="position: relative; left: 0; top: 0; z-index: 1;"></canvas>
-		</div>
-	</div>
-	<canvas id="pfcanvas" width="2000" height="2000" style="position: relative; left: 0; top: 0; z-index: 0;"></canvas>
+<head>
+    <link rel="stylesheet" type="text/css" href="css/mapStyle.css">
+    <link rel="stylesheet" href="css/easy-autocomplete.min.css">
+    <link rel="stylesheet" href="css/toast.css">
+    <title>EventMap</title>
+</head>
+<body bgcolor="#E5E3DF" onload="getClr();">
+    <div class="pn" id="edial">
+        <input type="text" id="eventName" maxlength="12" size="10" placeholder="Enter Name..." onfocus="this.placeholder = ''" />
+        <input type="button" id="subbut" onclick="addItem();" value="submit">
+        <div id="grad1"></div>
+        <input type="range" min="0" max="202" value="101" class="slider" id="myRange" />
+    </div>
+    <div id="snackdiv"></div>
+    <div id="friends">
+        <ul id="dynamic-list"></ul>
+        <!-- <input type="text" id="candidate"/> -->
+        <!-- <button onclick="addItem()">add item</button> -->
+        <!-- <button onclick="removeItem()">remove item</button> -->
+    </div>
+    <div class="autoc">
+        <input title="press enter to search" id="txtin" class="txt" type="text" placeholder="search..." onkeydown="search(this)">
+    </div>
+    <div class="controls">
+        <input title="menu" class="btn" id="nav-toggle" type="button" value="☰">
+        <input title="zoom in" class="btn" id="zoomButton" type="button" value="+">
+        <input title="zoom out" class="btn" id="resetButton" type="button" value="-">
+        <input title="pin event" class="btn" id="eventButton" type="button" value="📌" onclick="cEvent();toasting('Right click to place event');">
+    </div>
+    <div class="distance">
+        <p id="dist"></p>
+    </div>
+    <div class="image-content">
+        <div class="panzoom" id="pnz">
+            <canvas id="layer4" width="2000" height="2000" style="position: absolute; left: 0; top: 0; z-index: 3;"></canvas>
+            <canvas id="layer3" width="2000" height="2000" style="position: absolute; left: 0; top: 0; z-index: 2;"></canvas>
+            <canvas id="layer2" width="2000" height="2000" style="position: absolute; left: 0; top: 0; z-index: 4;"></canvas>
+            <canvas id="layer1" width="2000" height="2000" style="position: relative; left: 0; top: 0; z-index: 1;"></canvas>
+        </div>
+    </div>
+  <canvas id="myCanvas" width="202" height="1" style="position: relative;"></canvas>
+  <canvas id="pfcanvas" width="1000" height="1000" style="position: relative; left: 0; top: 0; z-index: 0;"></canvas>
 </body>
-
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.panzoom/3.2.2/jquery.panzoom.js"></script>
 <script type="text/javascript" src="scripts/easystar-0.4.1.min.js"></script>
 <script type="text/javascript" src="scripts/map.js"></script>
-
+<script type="text/javascript" src="scripts/osmtogeojson.js"></script>
+<script type="text/javascript" src="scripts/jquery.easy-autocomplete.min.js"></script>
+<script type="text/javascript" src="scripts/pins.js"></script>
 </html>
