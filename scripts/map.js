@@ -9,6 +9,8 @@ var canvas4 = document.getElementById("layer3");
 var context4 = canvas4.getContext("2d");
 var canvas5 = document.getElementById("layer4");
 var context5 = canvas5.getContext("2d");
+var canvas6 = document.getElementById("layer5");
+var context6 = canvas6.getContext("2d");
 
 var sourceXmax = -6.622480;
 var sourceXmin = -6.569707
@@ -27,6 +29,7 @@ var pixel = new Array();
 
 var img = new Image();
 img.onload = function () {
+
 	context3.drawImage(img, 0, 0, 1000, 1000);
 	var imgData = context3.getImageData(0, 0, canvas3.height, canvas3.width);
 
@@ -49,16 +52,33 @@ img.onload = function () {
 	easystar.enableDiagonals();
 	easystar.enableCornerCutting();
 }
-img.src = 'images/mapnn.png';
+img.src = 'images/map.png';
 
 imageObj.onload = function () {
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(showPosition);
 	}
-};
+}
+
+function centerOn() {
+	zooming = 1;
+
+	$('.panzoom').panzoom('zoom', 1, {
+		animate : true
+	});
+	$('.panzoom').panzoom('pan', (1000 - xloc) + window.innerWidth / 2, (1000 - yloc) + window.innerHeight / 2, {
+		animate : true
+	});
+
+}
 
 var getX, getY;
+var zooming = 1;
 
+function init() {
+	autoComplete();
+	zoomFunc();
+}
 function showPosition(position) {
 	yloc = position.coords.latitude;
 	xloc = position.coords.longitude;
@@ -77,7 +97,8 @@ function showPosition(position) {
 	xloc = translateLocation(T1, T2, sourceXmin, sourceXmax, sourceX);
 	yloc = translateLocation(T1, T2, sourceYmin, sourceYmax, sourceY);
 
-	PointE.push({
+	
+	PointA.push({
 		x : Math.round(xloc),
 		y : Math.round(yloc),
 		n : "",
@@ -85,6 +106,9 @@ function showPosition(position) {
 		g : 0,
 		b : 0
 	});
+	
+	var username = "Ross Halpin";
+	var usrnm = username.replace(/(\B[a-z])|(\s)/g, '');
 
 	context.drawImage(imageObj, 0, 0, 2000, 2000);
 	context2.beginPath();
@@ -96,8 +120,58 @@ function showPosition(position) {
 	context2.stroke();
 	context2.font = "11px Arial";
 	context2.fillStyle = "white";
-	context2.fillText("RH", xloc - 8, yloc + 4);
+	context2.fillText(usrnm[0], xloc - 4, yloc + 4);
 
+	$('.panzoom').panzoom('pan', (1000 - xloc) + window.innerWidth / 2, (1000 - yloc) + window.innerHeight / 2);
+}
+
+function zoomFunc() {
+	var $panzoom = $('.panzoom').panzoom({});
+
+	$('.panzoom').panzoom('zoom', 1);
+	$('#resetButton').click(function (e) {
+		if (zooming <= 0.21) {
+			zooming = 0.2;
+		} else {
+			zooming = zooming - 0.2;
+		}
+		$('.panzoom').panzoom('zoom', zooming, {
+			animate : true,
+			focal : {
+				clientX : window.innerWidth / 2,
+				clientY : window.innerHeight / 2
+			}
+		});
+	});
+
+	$('#zoomButton').click(function (e) {
+		if (zooming >= 1.999999999) {
+			zooming = 1.999999999;
+		} else {
+			zooming = zooming + 0.2;
+		}
+		$('.panzoom').panzoom('zoom', zooming, {
+			animate : true,
+			focal : {
+				clientX : window.innerWidth / 2,
+				clientY : window.innerHeight / 2
+			}
+		});
+	});
+}
+
+function autoComplete() {
+	var options = {
+		url : "data/addresses.js",
+		list : {
+			maxNumberOfElements : 10,
+			match : {
+				enabled : true
+			}
+		}
+	};
+
+	$("#txtin").easyAutocomplete(options);
 }
 
 function getCanvasCoords(x, y) {
@@ -165,24 +239,46 @@ $(document).mouseup(function (e) {
 	if (e.which != 1 && toggle == false && document.getElementById("edial").style.visibility != "visible") {
 		var rect = canvas.getBoundingClientRect();
 		var coords = getCanvasCoords(e.clientX - rect.left, e.clientY - rect.top);
+		var incirc = false;
+		for (var i = 0; i < PointE.length; i++) {
+			if (inCircle(PointE[i].x, PointE[i].y, coords.x, coords.y)){
+				incirc = true;
+				
+				drawRoute(Math.round((PointA[0].x) / 2), Math.round((PointA[0].y) / 2), Math.round((PointE[i].x) / 2), Math.round((PointE[i].y) / 2));
+				centering(PointE[i].x, PointE[i].y);
+				
+			}
+		}
 
-		if (printx == false) {
+		if (incirc == false && printx == false) {
 			Point1(coords.x, coords.y);
-		} else {
+		} else if(printx == true) {
 			Point2(coords.x, coords.y);
 			drawRoute(x1, y1, x2, y2);
 		}
 	}
 });
 
-function search(ele) {
+var checked = false;
+
+$('input[name="direcCheck"]').on('click', function () {
+	if ($(this).is(':checked')) {
+		checked = true;
+		console.log("checked");
+	} else {
+		checked = false;
+		console.log("un checked");
+	}
+});
+
+function search(terms) {
 	if (event.key === 'Enter') {
-		var srch = ele.value;
+		var srch = terms.value;
 		var num = srch.replace(/[^0-9]/g, '');
 		var adr = srch.replace(/[0-9]{1,} /g, '');
-		console.log("num:" + num + "adr:" + adr);
+		//console.log("num:" + num + "adr:" + adr);
 		$.getJSON("data/map.geojson", function (json) {
-			for (var i = 0; i < 7273; i++) {
+			for (var i = 0; i < 7271; i++) {
 				try {
 					if (json.features[i].properties.street === adr && json.features[i].properties.housenumber === num) {
 						//console.log(json.features[i].properties.housenumber);
@@ -190,26 +286,35 @@ function search(ele) {
 						if (lo == null) {
 							lo = json.features[i].geometry.coordinates;
 						}
-						console.log(lo);
+						//console.log(lo);
 						if (lo != null) {
 							var xa = translateLocation(T1, T2, sourceXmin, sourceXmax, lo[0]);
 							var ya = translateLocation(T1, T2, sourceYmin, sourceYmax, lo[1]);
 
-							Point1(xa, ya);
+							centering(xa, ya);
 
-							sY = getY;
-							sX = getX;
+							if (checked == true) {
 
-							if ((sX < sourceXmax || sX > sourceXmin) && (sY > sourceYmax || sY < sourceYmin)) {
-								//alert("Spoofing coordinates");
-								sY = 53.383813;
-								sX = -6.597999;
+								Point1(xa, ya);
+
+								sY = getY;
+								sX = getX;
+
+								if ((sX < sourceXmax || sX > sourceXmin) && (sY > sourceYmax || sY < sourceYmin)) {
+									//alert("Spoofing coordinates");
+									sY = 53.383813;
+									sX = -6.597999;
+								}
+
+								var xc = translateLocation(T1, T2, sourceXmin, sourceXmax, sX);
+								var yc = translateLocation(T1, T2, sourceYmin, sourceYmax, sY);
+								Point2(xc, yc);
+								drawRoute(Math.round(xc / 2), Math.round(yc / 2), Math.round(xa / 2), Math.round(ya / 2));
+							} else {
+								Point1(xa, ya);
+								Point2(xa, ya);
+
 							}
-
-							var xc = translateLocation(T1, T2, sourceXmin, sourceXmax, sX);
-							var yc = translateLocation(T1, T2, sourceYmin, sourceYmax, sY);
-							Point2(xc, yc);
-							drawRoute(Math.round(xc / 2), Math.round(yc / 2), Math.round(xa / 2), Math.round(ya / 2));
 						}
 					}
 
@@ -218,26 +323,34 @@ function search(ele) {
 						if (lo == null) {
 							lo = json.features[i].geometry.coordinates;
 						}
-						console.log(lo);
+						//console.log(lo);
 						if (lo != null) {
 							var xa = translateLocation(T1, T2, sourceXmin, sourceXmax, lo[0]);
 							var ya = translateLocation(T1, T2, sourceYmin, sourceYmax, lo[1]);
+							centering(xa, ya);
 
-							Point1(xa, ya);
+							if (checked == true) {
 
-							sY = getY;
-							sX = getX;
+								Point1(xa, ya);
 
-							if ((sX < sourceXmax || sX > sourceXmin) && (sY > sourceYmax || sY < sourceYmin)) {
-								//alert("Spoofing coordinates");
-								sY = 53.383813;
-								sX = -6.597999;
+								sY = getY;
+								sX = getX;
+
+								if ((sX < sourceXmax || sX > sourceXmin) && (sY > sourceYmax || sY < sourceYmin)) {
+									//alert("Spoofing coordinates");
+									sY = 53.383813;
+									sX = -6.597999;
+								}
+
+								var xc = translateLocation(T1, T2, sourceXmin, sourceXmax, sX);
+								var yc = translateLocation(T1, T2, sourceYmin, sourceYmax, sY);
+								Point2(xc, yc);
+								drawRoute(Math.round(xc / 2), Math.round(yc / 2), Math.round(xa / 2), Math.round(ya / 2));
+							} else {
+								Point1(xa, ya);
+								Point2(xa, ya);
+
 							}
-
-							var xc = translateLocation(T1, T2, sourceXmin, sourceXmax, sX);
-							var yc = translateLocation(T1, T2, sourceYmin, sourceYmax, sY);
-							Point2(xc, yc);
-							drawRoute(Math.round(xc / 2), Math.round(yc / 2), Math.round(xa / 2), Math.round(ya / 2));
 						}
 					}
 				} catch (e) {}
@@ -261,47 +374,4 @@ $('#nav-toggle').click(function () {
 	$('#friends').toggleClass('menu-open');
 	$('.controls').toggleClass('menu-open');
 	$('body').toggleClass('menu-open');
-});
-
-$(function () {
-	var options = {
-		url : "data/addresses.js",
-		list : {
-			maxNumberOfElements : 10,
-			match : {
-				enabled : true
-			}
-		}
-	};
-
-	$("#txtin").easyAutocomplete(options);
-
-	var scale1 = 15,
-	scale2 = 2,
-	scale3 = 8,
-	scale4 = 4;
-	var zooming = 1;
-	var $panzoom = $('.panzoom').panzoom().panzoom('pan', -200, -400);
-
-	$('#resetButton').click(function (e) {
-		if (zooming <= 0.21) {
-			zooming = 0.2;
-		} else {
-			zooming = zooming - 0.2;
-		}
-		$('.panzoom').panzoom('zoom', zooming, {
-			animate : true,
-		});
-	});
-
-	$('#zoomButton').click(function (e) {
-		if (zooming >= 1.999999999) {
-			zooming = 1.999999999;
-		} else {
-			zooming = zooming + 0.2;
-		}
-		$('.panzoom').panzoom('zoom', zooming, {
-			animate : true,
-		});
-	});
 });
