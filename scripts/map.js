@@ -15,7 +15,7 @@ var context6 = canvas6.getContext("2d");
 var sourceXmax = -6.622480;
 var sourceXmin = -6.569707
 
-var sourceYmax = 53.395644;
+	var sourceYmax = 53.395644;
 var sourceYmin = 53.364110;
 
 var T1 = 2000;
@@ -97,7 +97,6 @@ function showPosition(position) {
 	xloc = translateLocation(T1, T2, sourceXmin, sourceXmax, sourceX);
 	yloc = translateLocation(T1, T2, sourceYmin, sourceYmax, sourceY);
 
-	
 	PointA.push({
 		x : Math.round(xloc),
 		y : Math.round(yloc),
@@ -106,7 +105,7 @@ function showPosition(position) {
 		g : 0,
 		b : 0
 	});
-	
+
 	var username = "Ross Halpin";
 	var usrnm = username.replace(/(\B[a-z])|(\s)/g, '');
 
@@ -241,18 +240,18 @@ $(document).mouseup(function (e) {
 		var coords = getCanvasCoords(e.clientX - rect.left, e.clientY - rect.top);
 		var incirc = false;
 		for (var i = 0; i < PointE.length; i++) {
-			if (inCircle(PointE[i].x, PointE[i].y, coords.x, coords.y)){
+			if (inCircle(PointE[i].x, PointE[i].y, coords.x, coords.y)) {
 				incirc = true;
-				
+
 				drawRoute(Math.round((PointA[0].x) / 2), Math.round((PointA[0].y) / 2), Math.round((PointE[i].x) / 2), Math.round((PointE[i].y) / 2));
 				centering(PointE[i].x, PointE[i].y);
-				
+
 			}
 		}
 
 		if (incirc == false && printx == false) {
 			Point1(coords.x, coords.y);
-		} else if(printx == true) {
+		} else if (printx == true) {
 			Point2(coords.x, coords.y);
 			drawRoute(x1, y1, x2, y2);
 		}
@@ -310,10 +309,17 @@ function search(terms) {
 								var yc = translateLocation(T1, T2, sourceYmin, sourceYmax, sY);
 								Point2(xc, yc);
 								drawRoute(Math.round(xc / 2), Math.round(yc / 2), Math.round(xa / 2), Math.round(ya / 2));
+								context5.beginPath();
+								context5.font = "11px Arial";
+								context5.fillStyle = "black";
+								context5.fillText(srch, xa-(srch.length*2.5), ya-10);
 							} else {
 								Point1(xa, ya);
 								Point2(xa, ya);
-
+								context5.beginPath();
+								context5.font = "11px Arial";
+								context5.fillStyle = "black";
+								context5.fillText(srch, xa-(srch.length*2.5), ya-10);
 							}
 						}
 					}
@@ -346,10 +352,17 @@ function search(terms) {
 								var yc = translateLocation(T1, T2, sourceYmin, sourceYmax, sY);
 								Point2(xc, yc);
 								drawRoute(Math.round(xc / 2), Math.round(yc / 2), Math.round(xa / 2), Math.round(ya / 2));
+								context5.beginPath();
+								context5.font = "11px Arial";
+								context5.fillStyle = "black";
+								context5.fillText(srch, xa-(srch.length*2.5), ya-10);
 							} else {
 								Point1(xa, ya);
 								Point2(xa, ya);
-
+								context5.beginPath();
+								context5.font = "11px Arial";
+								context5.fillStyle = "black";
+								context5.fillText(srch, xa-(srch.length*2.5), ya-10);
 							}
 						}
 					}
