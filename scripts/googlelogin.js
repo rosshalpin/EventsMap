@@ -9,7 +9,9 @@ Insert tags into html file:
 function GoogleSignIn(googleUser) {
   var id_token = googleUser.getAuthResponse().id_token;
   var credential = firebase.auth.GoogleAuthProvider.credential(id_token);
-  firebase.auth().signInWithCredential(credential).catch(function(error) {
+  firebase.auth().signInWithCredential(credential).then(function(e){
+      window.location= "http://localhost/EventsMap/sample.html";
+  }).catch(function(error) {
   var errorCode = error.code;
   var errorMessage = error.message;
   var email = error.email;

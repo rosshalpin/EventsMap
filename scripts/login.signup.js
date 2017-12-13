@@ -1,10 +1,13 @@
 //========================
 //create connection to database.
+var theuser;
+var loggedin;
 var firebaseRef = firebase.database().ref();
-
+var login = document.getElementById('btnLogin');
 //Email and password login
-btnLogin.addEventListener('click', e => {
-alert("hello");
+//if statement checks if the element exists
+if(login){
+	login.addEventListener('click', e => {
     //Create the login constants
     const txtEmail = document.getElementById('LtxtEmail');
     const txtPassword = document.getElementById('LtxtPassword');
@@ -15,23 +18,24 @@ alert("hello");
 
     //use function to sign in to firebase
     const promise = auth.signInWithEmailAndPassword(email,pass);
-    //if unsuccessful print error to console log
-    promise.catch(e => console.log(e.message));
-
-console.log(firebase.auth().currentUser);
-
-
+    //if successful then relocate to new html page
+    promise.then(function(){
+		window.location= "file:///home/u180179/Desktop/Event/sample.html";
+		//if unsuccessful print error to console log
+	}).catch(e => console.log(e.message));
 });
+}
 
 //This checks if the user is logged in
 firebase.auth().onAuthStateChanged(firebaseUser => {
     if(firebaseUser){
         //Checks if the user used Google to Sign in
-        if(firebase.auth().currentUser.providerData[0].providerId==="google.com"
-){
+        if(firebase.auth().currentUser.providerData[0].providerId==="google.com"){
+			if(login){
+
             auth2 = gapi.auth2.init({
             client_id: '640024775083-mn2gt40oe50gicmumf4aqnvbb98pkmsu.apps.googleusercontent.com',
-            });
+            })
             if(auth2.isSignedIn.get()){
                 //sends the Users profile to be saved in the database
                 var UserProfile = auth2.currentUser.get().getBasicProfile();
@@ -40,34 +44,36 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
                 save(UserProfile,"google");
                 //Prints to console log who has signed in and the method they used
                 console.log(UserProfile.getName()+" has signed in with Google.");
-				//window.location.href = "map.html";
-		
-				
             }else{
-               // console.log(firebaseUser.email+" is logged in.");
+                console.log(firebaseUser.email+" is logged in.");
             }
-
-		
-	   
+		}
+			loggedin=false;
         }else{
-			console.log(firebaseUser.email+" is logged in.");
-			//window.location.href = "map.html";
-
+			theuser=firebaseUser;
+			console.log(firebaseUser.uid+" is logged in.");
         }
-
+		if(typeof profileinfo=='function'){
+			profileinfo(firebaseUser.uid);
+		}
     }else{
         //print to console when nobody is signed in
         console.log("Not logged in");
     }
-});
+})
 
-btnLogout.addEventListener('click',e =>{
-		firebase.auth().signOut();
+//This will log the user out
+btnLogout.addEventListener('click', e => {
+    firebase.auth().signOut();
+	window.location="file:///home/u180179/Desktop/Event/signup.html";
 });
-
 
 var user = firebase.auth().currentUser;
-btnSignUp.addEventListener('click',e =>{
+
+var signup = document.getElementById('btnSignUp');
+//if statement checks if the element exists
+if(signup){
+	btnSignUp.addEventListener('click',e =>{
     //Create the Signup constants
     const txtFirstName = document.getElementById('StxtFirstName');
     const txtLastName = document.getElementById('StxtLastName');
@@ -78,8 +84,8 @@ btnSignUp.addEventListener('click',e =>{
     const firstname = txtFirstName.value;
     const lastname = txtLastName.value;
     const email = txtEmail.value;
-    const pass1 = txtPassword1.value;
-    const pass2 = txtPassword2.value;
+	var pass1 = txtPassword1.value;
+    var pass2 = txtPassword2.value;
     const auth = firebase.auth();
     //use function to sign in to firebase
     if(pass1==pass2){
@@ -92,15 +98,21 @@ btnSignUp.addEventListener('click',e =>{
             };
             //Send object to function to save User information to the database
             save(obj,"email");
+			window.location= "file:///home/u180179/Desktop/Event/sample.html";
         }).catch(function(error){
 
             console.log(error.message);
         });
     }else{
-    //if passwords don't match a message will be printed to console log
-    console.log("Passwords don't match");
+		if(pass1.length<6){
+			console.log("Password must be at least 6 length")
+		}else{
+			//if passwords don't match a message will be printed to console log
+			console.log("Passwords don't match");
+		}
     }
 });
+}
 //save function used to save information to database.
 function save(profile,type){
     var uid = firebase.auth().currentUser.uid;
@@ -122,4 +134,3 @@ function save(profile,type){
         firebaseRef.child("Users").child(uid).child("Image_URL").set(profile.Paa);
     }
 }
-

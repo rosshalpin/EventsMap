@@ -30,12 +30,14 @@ var firebaseRef = firebase.database().ref();
 
 function requests(){
     var uid = firebase.auth().currentUser.uid;
-    var a= firebaseRef.child('Users').child(uid).child("Friends").orderByChild("status").startAt("f")
+    var a= firebaseRef.child('Users').child(uid).child("Friends").orderByChild("status").equalTo("f")
     .on("value",function(snapshot){
+        console.log("hello");
         //everytime a value tha matchs the requirements are meet the ID is sent to the display people function.
         snapshot.forEach(function(data) {
+            console.log(data.ref);
         //displaypeople(data.key);
-        console.log(data.key);
+        //console.log(data.key);
         requestfriend(data.key);
         });
         //console.log(p);
@@ -55,6 +57,6 @@ $(document).ready(function(){
 	$('.chat_head').click(function(){
 		$('.chat_body').slideToggle('slow');
 	});
-	
+
 
 });

@@ -31,33 +31,44 @@ fileButton.addEventListener('change', function(e){
 
     );
 });
-function profileinfo(){
-	document.getElementById("email").innerText=theuser.email;
-	var nameref = firebase.database().ref("/Users/"+theuser.uid+"/Full_Name").once("value").then(function(snapshot){
+function profileinfo(uid){
+    console.log(uid);
+    var firebaseRef = firebase.database().ref();
+    var nref = firebase.database().ref("/Users/"+uid+"/Email").once("value").then(function(snapshot){
+        var u = snapshot.val();
+        document.getElementById("email").innerHTML=u;
+    });
+	var nameref = firebase.database().ref("/Users/"+uid+"/Full_Name").once("value").then(function(snapshot){
         var i = snapshot.val();
 		document.getElementById("name").innerText=i;
         //console.log(i);
     });
-	profile();
+	profile(uid);
 }
 
-function profile(){
-	var storager=firebase.storage().ref(theuser.uid+'/profilepic/profilepicture.jpg');
-	if(storager!=null){
+function profile(uid){
+	var storager=firebase.storage().ref(uid+'/profilepic/profilepicture.jpg');
+	if(storager){
+        console.log("suh");
 		storager.getDownloadURL().then(function(url){
 		document.getElementById("pp").src=url;
 		//console.log(url);
 	});
-	}
+}else{
+    var a= firebaseRef.child('Users').child(uid).child("Image_URL").on("value",function(snapshot){
+        console.log("works");
+        //everytime a value tha matchs the requirements are meet the ID is sent to the display people function.
+        console.log(snapshot);
+        //console.log(p);
+    });
+}
 }
 
 function peepspic(u){
 	var storager=firebase.storage().ref(u+'/profilepic/profilepicture.jpg');
 	if(storager!=null){
 		storager.getDownloadURL().then(function(url){
-            console.log("das nice "+url);
 		document.getElementById(u).src=url;
-		console.log("peeps"+url);
 	});
 	}
 }
