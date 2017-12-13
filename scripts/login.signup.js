@@ -4,6 +4,7 @@ var firebaseRef = firebase.database().ref();
 
 //Email and password login
 btnLogin.addEventListener('click', e => {
+alert("hello");
     //Create the login constants
     const txtEmail = document.getElementById('LtxtEmail');
     const txtPassword = document.getElementById('LtxtPassword');
@@ -16,16 +17,21 @@ btnLogin.addEventListener('click', e => {
     const promise = auth.signInWithEmailAndPassword(email,pass);
     //if unsuccessful print error to console log
     promise.catch(e => console.log(e.message));
+
+console.log(firebase.auth().currentUser);
+
+
 });
 
 //This checks if the user is logged in
 firebase.auth().onAuthStateChanged(firebaseUser => {
     if(firebaseUser){
         //Checks if the user used Google to Sign in
-        if(firebase.auth().currentUser.providerData[0].providerId==="google.com"){
+        if(firebase.auth().currentUser.providerData[0].providerId==="google.com"
+){
             auth2 = gapi.auth2.init({
             client_id: '640024775083-mn2gt40oe50gicmumf4aqnvbb98pkmsu.apps.googleusercontent.com',
-            })
+            });
             if(auth2.isSignedIn.get()){
                 //sends the Users profile to be saved in the database
                 var UserProfile = auth2.currentUser.get().getBasicProfile();
@@ -34,23 +40,31 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
                 save(UserProfile,"google");
                 //Prints to console log who has signed in and the method they used
                 console.log(UserProfile.getName()+" has signed in with Google.");
+				//window.location.href = "map.html";
+		
+				
             }else{
-                console.log(firebaseUser.email+" is logged in.");
+               // console.log(firebaseUser.email+" is logged in.");
             }
+
+		
+	   
         }else{
-            //manualsave();
+			console.log(firebaseUser.email+" is logged in.");
+			//window.location.href = "map.html";
+
         }
 
     }else{
         //print to console when nobody is signed in
         console.log("Not logged in");
     }
-})
-
-//This will log the user out
-btnLogout.addEventListener('click', e => {
-    firebase.auth().signOut();
 });
+
+btnLogout.addEventListener('click',e =>{
+		firebase.auth().signOut();
+});
+
 
 var user = firebase.auth().currentUser;
 btnSignUp.addEventListener('click',e =>{
@@ -108,3 +122,4 @@ function save(profile,type){
         firebaseRef.child("Users").child(uid).child("Image_URL").set(profile.Paa);
     }
 }
+
