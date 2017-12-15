@@ -1,9 +1,13 @@
 //========================
 //create connection to database.
+var theuser;
+var loggedin;
 var firebaseRef = firebase.database().ref();
-
+var login = document.getElementById('btnLogin');
 //Email and password login
-btnLogin.addEventListener('click', e => {
+//if statement checks if the element exists
+if(login){
+	login.addEventListener('click', e => {
     //Create the login constants
     const txtEmail = document.getElementById('LtxtEmail');
     const txtPassword = document.getElementById('LtxtPassword');
@@ -14,15 +18,21 @@ btnLogin.addEventListener('click', e => {
 
     //use function to sign in to firebase
     const promise = auth.signInWithEmailAndPassword(email,pass);
-    //if unsuccessful print error to console log
-    promise.catch(e => console.log(e.message));
+    //if successful then relocate to new html page
+    promise.then(function(){
+		window.location= "http://localhost/EventsMap-map/map.html";
+		//if unsuccessful print error to console log
+	}).catch(e => console.log(e.message));
 });
+}
 
 //This checks if the user is logged in
 firebase.auth().onAuthStateChanged(firebaseUser => {
     if(firebaseUser){
         //Checks if the user used Google to Sign in
         if(firebase.auth().currentUser.providerData[0].providerId==="google.com"){
+			if(login){
+
             auth2 = gapi.auth2.init({
             client_id: '640024775083-mn2gt40oe50gicmumf4aqnvbb98pkmsu.apps.googleusercontent.com',
             })
@@ -32,15 +42,21 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
                 console.log(UserProfile);
                 //Send the object to the save function to save User information to the database
                 save(UserProfile,"google");
+				window.location="http://localhost/EventsMap-map/map.html";
                 //Prints to console log who has signed in and the method they used
                 console.log(UserProfile.getName()+" has signed in with Google.");
             }else{
                 console.log(firebaseUser.email+" is logged in.");
             }
+		}
+			loggedin=false;
         }else{
-            //manualsave();
+			theuser=firebaseUser;
+			console.log(firebaseUser.uid+" is logged in.");
         }
-
+		if(typeof profileinfo=='function'){
+			profileinfo(firebaseUser.uid);
+		}
     }else{
         //print to console when nobody is signed in
         console.log("Not logged in");
@@ -50,10 +66,15 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
 //This will log the user out
 btnLogout.addEventListener('click', e => {
     firebase.auth().signOut();
+	window.location="http://localhost/EventsMap-map/signup.html";
 });
 
 var user = firebase.auth().currentUser;
-btnSignUp.addEventListener('click',e =>{
+
+var signup = document.getElementById('btnSignUp');
+//if statement checks if the element exists
+if(signup){
+	btnSignUp.addEventListener('click',e =>{
     //Create the Signup constants
     const txtFirstName = document.getElementById('StxtFirstName');
     const txtLastName = document.getElementById('StxtLastName');
@@ -64,8 +85,8 @@ btnSignUp.addEventListener('click',e =>{
     const firstname = txtFirstName.value;
     const lastname = txtLastName.value;
     const email = txtEmail.value;
-    const pass1 = txtPassword1.value;
-    const pass2 = txtPassword2.value;
+	var pass1 = txtPassword1.value;
+    var pass2 = txtPassword2.value;
     const auth = firebase.auth();
     //use function to sign in to firebase
     if(pass1==pass2){
@@ -78,15 +99,21 @@ btnSignUp.addEventListener('click',e =>{
             };
             //Send object to function to save User information to the database
             save(obj,"email");
+			window.location= "http://localhost/EventsMap-map/map.html";
         }).catch(function(error){
 
             console.log(error.message);
         });
     }else{
-    //if passwords don't match a message will be printed to console log
-    console.log("Passwords don't match");
+		if(pass1.length<6){
+			console.log("Password must be at least 6 length")
+		}else{
+			//if passwords don't match a message will be printed to console log
+			console.log("Passwords don't match");
+		}
     }
 });
+}
 //save function used to save information to database.
 function save(profile,type){
     var uid = firebase.auth().currentUser.uid;

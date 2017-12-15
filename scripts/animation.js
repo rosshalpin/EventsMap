@@ -5,12 +5,8 @@ $("#login-box").fadeIn(1300);
 $(".or").fadeIn(1300);
 }
 
-
 $(function(){
 	$('#L1').on('click',function(){
-
-
-
 		$('#log').hide();
 		$('#signup').addClass("hidden");
 		$('#log').removeClass("hidden");

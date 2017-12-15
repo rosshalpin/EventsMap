@@ -298,7 +298,7 @@ transition: all 0.5s;
 
 }
 #L1{
-	padding-left:px;
+	padding-left:0px;
 	font-size:20px;
 }
 
@@ -322,4 +322,33 @@ transition: all 0.5s;
 	background-color: #fe5652;
 
 	visibility: hidden;
+}
+
+
+.body{
+	background:#16a085;
+	margin:0px;
+	height:900px;
+	font-family: sans-serif;
+}
+
+.chat_box{
+	position:fixed;
+	right:20px;
+	bottom:0px;
+	width:250px;
+}
+.chat_body{
+	background:white;
+	height:400px;
+	padding:5px 0px;
+}
+
+.chat_head,.msg_head{
+	background:#f39c12;
+	color:white;
+	padding:15px;
+	font-weight:bold;
+	cursor:pointer;
+	border-radius:5px 5px 0px 0px;
 }
