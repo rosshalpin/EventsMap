@@ -3,6 +3,7 @@ function searchbtn(){
     $('#backb').show();
     $('#searchb').hide();
     $('#requestb').hide();
+    $('#Events').hide();
 }
 function back(){
     $('.search').hide();
@@ -10,12 +11,21 @@ function back(){
     $('#searchb').show();
     $('#requesttable').hide();
     $('#requestb').show();
+    $('#Events').show();
 }
 function requestbtn(){
     $('#requestb').hide();
     $('#backb').show();
     $('#requesttable').show();
     $('#searchb').hide();
+    $('#Events').hide();
+}
+function eventsbtn(){
+    $('#requestb').hide();
+    $('#backb').show();
+    $('#requesttable').hide();
+    $('#searchb').hide();
+    $('#Events').hide();
 }
 
 var mytable="<table class='emails'>";
