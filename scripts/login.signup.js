@@ -20,7 +20,7 @@ if(login){
     const promise = auth.signInWithEmailAndPassword(email,pass);
     //if successful then relocate to new html page
     promise.then(function(){
-		window.location= "http://localhost/EventsMap-map/map.html";
+		window.location= "http://localhost/EventsMap/map.html";
 		//if unsuccessful print error to console log
 	}).catch(e => console.log(e.message));
 });
@@ -42,7 +42,7 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
                 console.log(UserProfile);
                 //Send the object to the save function to save User information to the database
                 save(UserProfile,"google");
-				window.location="http://localhost/EventsMap-map/map.html";
+				window.location="http://localhost/EventsMap/map.html";
                 //Prints to console log who has signed in and the method they used
                 console.log(UserProfile.getName()+" has signed in with Google.");
             }else{
@@ -64,11 +64,13 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
 })
 
 //This will log the user out
-btnLogout.addEventListener('click', e => {
-    firebase.auth().signOut();
-	window.location="http://localhost/EventsMap-map/signup.html";
-});
-
+var logout = document.getElementById('btnLogout');
+if(logout){
+	btnLogout.addEventListener('click', e => {
+	    firebase.auth().signOut();
+		window.location="http://localhost/EventsMap/signup.html";
+	});
+}
 var user = firebase.auth().currentUser;
 
 var signup = document.getElementById('btnSignUp');
@@ -99,7 +101,7 @@ if(signup){
             };
             //Send object to function to save User information to the database
             save(obj,"email");
-			window.location= "http://localhost/EventsMap-map/map.html";
+			window.location= "http://localhost/EventsMap/map.html";
         }).catch(function(error){
 
             console.log(error.message);
@@ -130,6 +132,8 @@ function save(profile,type){
     firebaseRef.child("Users").child(uid).child("First_Name").set(profile.ofa);
     firebaseRef.child("Users").child(uid).child("Last_Name").set(profile.wea);
     firebaseRef.child("Users").child(uid).child("Email").set(profile.U3);
+	firebaseRef.child("Users").child(uid).child("X").set(0);
+	firebaseRef.child("Users").child(uid).child("Y").set(0);
     //if the user signs up with google the profile picture will be added to the database too.
     if(type==="google"){
         firebaseRef.child("Users").child(uid).child("Image_URL").set(profile.Paa);

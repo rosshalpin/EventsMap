@@ -45,21 +45,29 @@ function profileinfo(uid){
 
 function profile(uid){
 	var storager=firebase.storage().ref(uid+'/profilepic/profilepicture.jpg');
-	if(storager!==null){
+    console.log(storager.location.u);
+	if(storager.location.u!==null){
 		storager.getDownloadURL().then(function(url){
 		document.getElementById("pp").src=url;
 		//console.log(url);
-	});
-}else{
-    var a= firebaseRef.child('Users').child(uid).child("Image_URL").on("value",function(snapshot){
-        //everytime a value tha matchs the requirements are meet the ID is sent to the display people function.
-        console.log(snapshot);
-        //console.log(p);
-    });
-}
+	}).catch(function(error){
+        console.log("no error");
+        var a= firebaseRef.child('Users').child(uid).child("Image_URL").on("value",function(snapshot){
+            //everytime a value tha matchs the requirements are meet the ID is sent to the display people function.
+            if(snapshot.val()!==null){
+                document.getElementById("pp").src=snapshot;
+            }else{
+                console.log("no picture");
+            }
+
+            //console.log(p);
+            });
+        });
+    }
 }
 
 function peepspic(u){
+    console.log("hello");
 	var storager=firebase.storage().ref(u+'/profilepic/profilepicture.jpg');
 	if(storager!==null){
 		storager.getDownloadURL().then(function(url){

@@ -14,7 +14,7 @@ $(document).ready(function(){
            //everytime a value tha matchs the requirements are meet the ID is sent to the display people function.
            snapshot.forEach(function(data) {
            //displaypeople(data.key);
-           //console.log(data.key);
+           console.log(data.key);
            displayname(data.key);
            });
            //console.log(p);
@@ -41,40 +41,73 @@ function displayemail(uid){
 
 EvP = [];
 function uploadE(x,y,name,r,g,b,time){
-var bastards = x+"@"+y+"@"+name+"@"+r+"@"+g+"@"+b+"@"+time;
-	var uid = firebase.auth().currentUser.uid;
-	firebaseRef.child("Users").child(uid).child("bastards").set(bastards);
+    var uid = firebase.auth().currentUser.uid;
+    var party = uid+"@"+x+"@"+y+"@"+name+"@"+r+"@"+g+"@"+b+"@"+time;
+    firebaseRef.child("Events").child(party).child("Admin").set(uid);
 }
 
 function downloadE(uid){
-    EVP=[];
-	//var uid = firebase.auth().currentUser.uid;
-	var a=firebase.database().ref("/Users/"+uid+"/bastards").on("value",function(shithead){
-		var u = shithead;
-		console.log(u.val());
-		$.each(u.val().split(/\@/), function (i, val) {
-    			 EvP.push(val);
-
-
-		})
-	});
-console.log(EvP);
+    EvP=[];
+	var u = firebase.auth().currentUser.uid;
+	var a= firebaseRef.child('Events').orderByChild("Admin").startAt(uid)
+    .on("value",function(snapshot){
+        snapshot.forEach(function(data) {
+            var a =data.key;
+            if(!a.startsWith(u)){
+                $.each(a.split(/\@/), function (i, val) {
+                if(uid!==val){
+                    EvP.push(val);
+                    }
+		        })
+            }
+        });
+     });
+     console.log(EvP);
 }
 
 function events(){
     var uid = firebase.auth().currentUser.uid;
     var a= firebaseRef.child('Users').child(uid).child("Friends").orderByChild("status").equalTo("t")
     .on("value",function(snapshot){
-        //everytime a value tha matchs the requirements are meet the ID is sent to the display people function.
         snapshot.forEach(function(data) {
             var ref = firebase.database().ref("Users/"+data.key);
             ref.once("value").then(function(snapshit) {
-                var hasEvent = snapshit.hasChild("bastards");
-                if(hasEvent){
-                    downloadE(data.key);
-                }
+                downloadE(data.key);
             });
-        //console.log(p);
         });
     });
+}
+
+function yourpos(x,y){
+    var uid = firebase.auth().currentUser.uid;
+    firebaseRef.child("Users").child(uid).child("X").set(x);
+    firebaseRef.child("Users").child(uid).child("Y").set(y);
+}
+
+function friendspos(){
+    var uid = firebase.auth().currentUser.uid;
+    firebaseRef.child('Users').child(uid).child("Friends").orderByChild("status").equalTo("t")
+    .on("value",function(snapshot){
+        snapshot.forEach(function(data) {
+            var ref = firebase.database().ref("Users/"+data.key);
+            ref.once("value").then(function(snapshit) {
+                x(data.key);
+                y(data.key);
+            });
+        });
+    });
+}
+
+function x(uid){
+    var a=firebase.database().ref("/Users/"+uid+"/X").on("value",function(shithead){
+		var u = shithead;
+		console.log("X:"+u.val());
+	});
+}
+
+function y(uid){
+    var b=firebase.database().ref("/Users/"+uid+"/Y").on("value",function(shithead){
+		var v = shithead;
+		console.log("Y:"+v.val());
+	});
 }
