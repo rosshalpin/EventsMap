@@ -22,6 +22,7 @@ var sourceYmin = 53.364110;
 
 var T1 = 2000;
 var T2 = 0;
+var offset = -50;
 
 var xloc, yloc;
 
@@ -131,7 +132,7 @@ function showPosition(position) {
 	var sourceX = xloc;
 	var sourceY = yloc;
 
-	xloc = translateLocation(T1, T2, sourceXmin, sourceXmax, sourceX)-50;
+	xloc = translateLocation(T1, T2, sourceXmin, sourceXmax, sourceX)+offset;
 	yloc = translateLocation(T1, T2, sourceYmin, sourceYmax, sourceY);
 	yourpos(xloc, yloc);
 	console.log(xloc + " " + yloc);
@@ -151,7 +152,7 @@ function showPosition(position) {
 	context.drawImage(imageObj, 0, 0, 2000, 2000);
 	context7.beginPath();
 	context7.arc(xloc, yloc, 8, 0, 2 * Math.PI, false);
-	context7.fillStyle = '#4286f4';
+	context7.fillStyle = 'black';
 	context7.fill();
 	context7.lineWidth = 2;
 	context7.strokeStyle = 'white';
@@ -371,7 +372,7 @@ function search(terms) {
 									sX = -6.597999;
 								}
 
-								var xc = translateLocation(T1, T2, sourceXmin, sourceXmax, sX);
+								var xc = translateLocation(T1, T2, sourceXmin, sourceXmax, sX)+offset;
 								var yc = translateLocation(T1, T2, sourceYmin, sourceYmax, sY);
 								Point2(xc, yc);
 								drawRoute(Math.round(xc / 2), Math.round(yc / 2), Math.round(xa / 2), Math.round(ya / 2));
@@ -420,7 +421,7 @@ function search(terms) {
 									sX = -6.597999;
 								}
 
-								var xc = translateLocation(T1, T2, sourceXmin, sourceXmax, sX);
+								var xc = translateLocation(T1, T2, sourceXmin, sourceXmax, sX)+offset;
 								var yc = translateLocation(T1, T2, sourceYmin, sourceYmax, sY);
 								Point2(xc, yc);
 								drawRoute(Math.round(xc / 2), Math.round(yc / 2), Math.round(xa / 2), Math.round(ya / 2));
