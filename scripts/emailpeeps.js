@@ -12,6 +12,7 @@ function back() {
 	$('#requesttable').hide();
 	$('#requestb').show();
 	$('#Events').show();
+	$('#dynamic-list').hide();
 }
 function requestbtn() {
 	$('#requestb').hide();
@@ -21,6 +22,7 @@ function requestbtn() {
 	$('#Events').hide();
 }
 function eventsbtn() {
+	$('#dynamic-list').show();
 	$('#requestb').hide();
 	$('#backb').show();
 	$('#requesttable').hide();

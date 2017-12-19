@@ -20,7 +20,7 @@ if(login){
     const promise = auth.signInWithEmailAndPassword(email,pass);
     //if successful then relocate to new html page
     promise.then(function(){
-		window.location= "http://localhost/EventsMap/map.html";
+		window.location= "https://ev3ntmap-f8375.firebaseapp.com/map.html";
 		//if unsuccessful print error to console log
 	}).catch(e => console.log(e.message));
 });
@@ -42,7 +42,7 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
                 console.log(UserProfile);
                 //Send the object to the save function to save User information to the database
                 save(UserProfile,"google");
-				window.location="http://localhost/EventsMap/map.html";
+				window.location="https://ev3ntmap-f8375.firebaseapp.com/map.html";
                 //Prints to console log who has signed in and the method they used
                 console.log(UserProfile.getName()+" has signed in with Google.");
             }else{
@@ -68,7 +68,7 @@ var logout = document.getElementById('btnLogout');
 if(logout){
 	btnLogout.addEventListener('click', e => {
 	    firebase.auth().signOut();
-		window.location="http://localhost/EventsMap/signup.html";
+		window.location="https://ev3ntmap-f8375.firebaseapp.com";
 	});
 }
 var user = firebase.auth().currentUser;
@@ -101,7 +101,7 @@ if(signup){
             };
             //Send object to function to save User information to the database
             save(obj,"email");
-			window.location= "http://localhost/EventsMap/map.html";
+			window.location= "https://ev3ntmap-f8375.firebaseapp.com/map.html";
         }).catch(function(error){
 
             console.log(error.message);
