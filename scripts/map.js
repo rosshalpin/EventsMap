@@ -135,7 +135,7 @@ function showPosition(position) {
 	xloc = translateLocation(T1, T2, sourceXmin, sourceXmax, sourceX)+offset;
 	yloc = translateLocation(T1, T2, sourceYmin, sourceYmax, sourceY);
 	yourpos(xloc, yloc);
-	console.log(xloc + " " + yloc);
+	//console.log(xloc + " " + yloc);
 	PointA.push({
 		x : Math.round(xloc),
 		y : Math.round(yloc),
@@ -152,7 +152,7 @@ function showPosition(position) {
 	context.drawImage(imageObj, 0, 0, 2000, 2000);
 	context7.beginPath();
 	context7.arc(xloc, yloc, 8, 0, 2 * Math.PI, false);
-	context7.fillStyle = 'black';
+	context7.fillStyle = '#4286f4';
 	context7.fill();
 	context7.lineWidth = 2;
 	context7.strokeStyle = 'white';
@@ -277,7 +277,13 @@ function drawRoute(x, y, xx, yy) {
 	});
 	easystar.calculate();
 }
-
+$('body').keypress(function(e){
+    alert(e.which);
+    if(e.which == 27){
+        context4.clearRect(0, 0, canvas4.width, canvas4.height);
+	context5.clearRect(0, 0, canvas4.width, canvas4.height);
+    }
+});
 $(document).mouseup(function (e) {
 	if (e.which != 1 && toggle == false && document.getElementById("edial").style.visibility != "visible") {
 		var rect = canvas.getBoundingClientRect();

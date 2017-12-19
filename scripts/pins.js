@@ -113,7 +113,7 @@ function addItem() {
 			});
 			evCircle(context6, getxa, getya, evName.value, r, g, b);
 			centering(getxa, getya, evName.value, );
-			console.log("ross" + Math.floor(getxa) + " " + Math.floor(getya) + " " + evName.value + " " + r + " " + g + " " + b + " " + evTime.value);
+			//console.log( Math.floor(getxa) + " " + Math.floor(getya) + " " + evName.value + " " + r + " " + g + " " + b + " " + evTime.value);
 			uploadE(Math.floor(getxa), Math.floor(getya), evName.value, r, g, b, evTime.value);
 
 		}

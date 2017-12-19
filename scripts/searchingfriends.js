@@ -69,6 +69,7 @@ function downloadE(uid) {
 		});
 	var str = "ev";
 	var a2 = firebaseRef.child('Events').orderByChild("Admin").equalTo(u).on("value", function (snapshot) {
+		
 			snapshot.forEach(function (data) {
 				var c2 = data.key;
 
@@ -76,9 +77,9 @@ function downloadE(uid) {
 
 					$.each(c2.split(/\@/), function (i, val) {
 						if (u != val) {
-
+							
 							EvP.push(val);
-
+				
 						}
 					});
 
@@ -87,7 +88,9 @@ function downloadE(uid) {
 			});
 
 		});
+	
 }
+
 function Ename(uid) {
 	firebase.database().ref("/Users/" + uid + "/Full_Name").once("value").then(function (snapshot) {
 		var u = snapshot.val();
@@ -146,16 +149,23 @@ function friendspos(){
             });
         });
     });
-    console.log(fLoc);
+   //console.log(fLoc);
 	setTimeout(function () {
 	drawFriends();
 	}, 2000);
 }
 var fLoc = [];
-
+function onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+}
 function friendsEvents() {
-	console.log(EvP);
-
+	for(var i=0; i< EvP.length; i+=8){
+		if(EvP[i] == EvP[i+8]){
+			EvP.splice(i,8);
+		}
+	}
+	
+	
 	for (var i = 0; i < EvP.length; i += 8) {
 		//console.log("hello" + EvP[i + 1] + " " + EvP[i + 2] + " " + EvPEvP[i + 3] + " " + EvPEvP[i + 4] + " " + EvPEvP[i + 5] + " " + EvPEvP[i + 6]);
 		evCircle(context7, EvP[i], EvP[i + 1], EvP[i + 2], EvP[i + 3], EvP[i + 4], EvP[i + 5]);
