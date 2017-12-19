@@ -22,7 +22,6 @@ var sourceYmin = 53.364110;
 
 var T1 = 2000;
 var T2 = 0;
-var offset = -50;
 
 var xloc, yloc;
 
@@ -132,10 +131,10 @@ function showPosition(position) {
 	var sourceX = xloc;
 	var sourceY = yloc;
 
-	xloc = translateLocation(T1, T2, sourceXmin, sourceXmax, sourceX)+offset;
+	xloc = translateLocation(T1, T2, sourceXmin, sourceXmax, sourceX)-50;
 	yloc = translateLocation(T1, T2, sourceYmin, sourceYmax, sourceY);
 	yourpos(xloc, yloc);
-	//console.log(xloc + " " + yloc);
+	console.log(xloc + " " + yloc);
 	PointA.push({
 		x : Math.round(xloc),
 		y : Math.round(yloc),
@@ -277,13 +276,7 @@ function drawRoute(x, y, xx, yy) {
 	});
 	easystar.calculate();
 }
-$('body').keypress(function(e){
-    alert(e.which);
-    if(e.which == 27){
-        context4.clearRect(0, 0, canvas4.width, canvas4.height);
-	context5.clearRect(0, 0, canvas4.width, canvas4.height);
-    }
-});
+
 $(document).mouseup(function (e) {
 	if (e.which != 1 && toggle == false && document.getElementById("edial").style.visibility != "visible") {
 		var rect = canvas.getBoundingClientRect();
@@ -378,7 +371,7 @@ function search(terms) {
 									sX = -6.597999;
 								}
 
-								var xc = translateLocation(T1, T2, sourceXmin, sourceXmax, sX)+offset;
+								var xc = translateLocation(T1, T2, sourceXmin, sourceXmax, sX);
 								var yc = translateLocation(T1, T2, sourceYmin, sourceYmax, sY);
 								Point2(xc, yc);
 								drawRoute(Math.round(xc / 2), Math.round(yc / 2), Math.round(xa / 2), Math.round(ya / 2));
@@ -427,7 +420,7 @@ function search(terms) {
 									sX = -6.597999;
 								}
 
-								var xc = translateLocation(T1, T2, sourceXmin, sourceXmax, sX)+offset;
+								var xc = translateLocation(T1, T2, sourceXmin, sourceXmax, sX);
 								var yc = translateLocation(T1, T2, sourceYmin, sourceYmax, sY);
 								Point2(xc, yc);
 								drawRoute(Math.round(xc / 2), Math.round(yc / 2), Math.round(xa / 2), Math.round(ya / 2));

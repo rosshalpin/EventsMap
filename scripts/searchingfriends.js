@@ -69,7 +69,6 @@ function downloadE(uid) {
 		});
 	var str = "ev";
 	var a2 = firebaseRef.child('Events').orderByChild("Admin").equalTo(u).on("value", function (snapshot) {
-		
 			snapshot.forEach(function (data) {
 				var c2 = data.key;
 
@@ -77,9 +76,9 @@ function downloadE(uid) {
 
 					$.each(c2.split(/\@/), function (i, val) {
 						if (u != val) {
-							
+
 							EvP.push(val);
-				
+
 						}
 					});
 
@@ -88,9 +87,7 @@ function downloadE(uid) {
 			});
 
 		});
-	
 }
-
 function Ename(uid) {
 	firebase.database().ref("/Users/" + uid + "/Full_Name").once("value").then(function (snapshot) {
 		var u = snapshot.val();
@@ -115,7 +112,7 @@ function events() {
 
 			});
 	} catch (e) {
-		
+		location.reload();
 	}
 	setTimeout(function () {
 		friendsEvents();
@@ -125,60 +122,59 @@ function events() {
 
 }
 
-function yourpos(x,y){
-    var uid = firebase.auth().currentUser.uid;
-    firebase.database().ref("/Users/"+uid+"/Full_Name").once("value").then(function(snapshot){
-        var u = snapshot.val();
-        firebaseRef.child("Users").child(uid).child("Position").set(x+"@"+y+"@"+u);
-    });
+function yourpos(x, y) {
+	var uid = firebase.auth().currentUser.uid;
+	firebase.database().ref("/Users/" + uid + "/Full_Name").once("value").then(function (snapshot) {
+		var u = snapshot.val();
+		firebaseRef.child("Users").child(uid).child("Position").set(x + "@" + y + "@" + u);
+	});
 }
 
-function friendspos(){
-    var uid = firebase.auth().currentUser.uid;
-    firebaseRef.child('Users').child(uid).child("Friends").orderByChild("status").equalTo("t")
-    .on("value",function(snapshot){
-        snapshot.forEach(function(data) {
-            var ref = firebase.database().ref("Users/"+data.key);
-            ref.once("value").then(function(snapshit) {
-                var b=firebase.database().ref("/Users/"+data.key+"/Position").on("value",function(shothead){
-            		var v = shothead.val();
-                    $.each(v.split(/\@/), function (i, val) {
+function friendspos() {
+	var uid = firebase.auth().currentUser.uid;
+	firebaseRef.child('Users').child(uid).child("Friends").orderByChild("status").equalTo("t")
+	.on("value", function (snapshot) {
+		snapshot.forEach(function (data) {
+			var ref = firebase.database().ref("Users/" + data.key);
+			ref.once("value").then(function (snapshit) {
+				var b = firebase.database().ref("/Users/" + data.key + "/Position").on("value", function (shothead) {
+						var v = shothead.val();
+						$.each(v.split(/\@/), function (i, val) {
 							fLoc.push(val);
+						});
 					});
-            	});
-            });
-        });
-    });
-   //console.log(fLoc);
+			});
+		});
+	});
+	//console.log(fLoc);
 	setTimeout(function () {
-	drawFriends();
+		drawFriends();
 	}, 2000);
 }
 var fLoc = [];
-function onlyUnique(value, index, self) { 
-    return self.indexOf(value) === index;
-}
-function friendsEvents() {
-	for(var i=0; i< EvP.length; i+=8){
-		if(EvP[i] == EvP[i+8]){
-			EvP.splice(i,8);
-		}
-	}
-	
-	
-	for (var i = 0; i < EvP.length; i += 8) {
-		//console.log("hello" + EvP[i + 1] + " " + EvP[i + 2] + " " + EvPEvP[i + 3] + " " + EvPEvP[i + 4] + " " + EvPEvP[i + 5] + " " + EvPEvP[i + 6]);
-		evCircle(context7, EvP[i], EvP[i + 1], EvP[i + 2], EvP[i + 3], EvP[i + 4], EvP[i + 5]);
-		var ul2 = document.getElementById("dynamic-list");
-		var li2 = document.createElement("li");
-		//li2.setAttribute('title', "click to delete");
-		li2.appendChild(document.createTextNode(EvP[i + 2] + " " + EvP[i + 6] + " " + EvP[i + 7]));
-		ul2.appendChild(li2);
-		
+
+function friendsEvents(){
+for (var h = 0; h < EvP.length; h += 8) {
+	if (EvP[h] == EvP[h + 8]) {
+		EvP.splice(h, 8);
 	}
 }
 
+
+for (var i = 0; i < EvP.length; i += 8) {
+	//console.log("hello" + EvP[i + 1] + " " + EvP[i + 2] + " " + EvPEvP[i + 3] + " " + EvPEvP[i + 4] + " " + EvPEvP[i + 5] + " " + EvPEvP[i + 6]);
+	evCircle(context7, EvP[i], EvP[i + 1], EvP[i + 2], EvP[i + 3], EvP[i + 4], EvP[i + 5]);
+	var ul2 = document.getElementById("dynamic-list");
+	var li2 = document.createElement("li");
+	//li2.setAttribute('title', "click to delete");
+	li2.appendChild(document.createTextNode(EvP[i + 2] + " " + EvP[i + 6] + " " + EvP[i + 7]));
+	ul2.appendChild(li2);
+
+}
+}
+
 function drawFriends() {
+
 	for (var i = 0; i < fLoc.length; i += 3) {
 
 		context2.beginPath();
@@ -190,12 +186,10 @@ function drawFriends() {
 		context2.stroke();
 		context2.font = "11px Arial";
 		context2.fillStyle = "black";
-		var rname = fLoc[i+2];
-		try{
+		var rname = fLoc[i + 2];
+		try {
 			context2.fillText(rname, fLoc[i] - rname.length * 2.5, fLoc[i + 1] - 15);
-		}catch(e){
-			
-		}
+		} catch (e) {}
 		PointH.push({
 			x : fLoc[i],
 			y : fLoc[i + 1],
