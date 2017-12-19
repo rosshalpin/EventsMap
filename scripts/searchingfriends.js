@@ -115,7 +115,7 @@ function events() {
 
 			});
 	} catch (e) {
-		location.reload();
+		
 	}
 	setTimeout(function () {
 		friendsEvents();
@@ -179,8 +179,7 @@ function friendsEvents() {
 }
 
 function drawFriends() {
-
-	for (var i = 0; i < fLoc.length; i += 2) {
+	for (var i = 0; i < fLoc.length; i += 3) {
 
 		context2.beginPath();
 		context2.arc(fLoc[i], fLoc[i + 1], 8, 0, 2 * Math.PI, false);
@@ -193,7 +192,7 @@ function drawFriends() {
 		context2.fillStyle = "black";
 		var rname = fLoc[i+2];
 		try{
-		context2.fillText(rname, fLoc[i] - rname.length * 2.5, fLoc[i + 1] - 15);
+			context2.fillText(rname, fLoc[i] - rname.length * 2.5, fLoc[i + 1] - 15);
 		}catch(e){
 			
 		}
