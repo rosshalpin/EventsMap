@@ -11,11 +11,13 @@ var canvas5 = document.getElementById("layer4");
 var context5 = canvas5.getContext("2d");
 var canvas6 = document.getElementById("layer5");
 var context6 = canvas6.getContext("2d");
+var canvas7 = document.getElementById("layer6");
+var context7 = canvas7.getContext("2d");
 
 var sourceXmax = -6.622480;
-var sourceXmin = -6.569707
+var sourceXmin = -6.569707;
 
-	var sourceYmax = 53.395644;
+var sourceYmax = 53.395644;
 var sourceYmin = 53.364110;
 
 var T1 = 2000;
@@ -27,9 +29,10 @@ var imageObj = new Image();
 imageObj.src = 'https://i.imgur.com/Wj6Mjx7.jpg';
 var pixel = new Array();
 
+PointH = [];
+
 var img = new Image();
 img.onload = function () {
-
 	context3.drawImage(img, 0, 0, 1000, 1000);
 	var imgData = context3.getImageData(0, 0, canvas3.height, canvas3.width);
 
@@ -51,6 +54,39 @@ img.onload = function () {
 	easystar.setTileCost(0, 30);
 	easystar.enableDiagonals();
 	easystar.enableCornerCutting();
+
+	PointH.push({
+		x : translateLocation(T1, T2, sourceXmin, sourceXmax, -6.590604),
+		y : translateLocation(T1, T2, sourceYmin, sourceYmax, 53.381660),
+		n : "Brady's"
+	});
+	PointH.push({
+		x : translateLocation(T1, T2, sourceXmin, sourceXmax, -6.591477),
+		y : translateLocation(T1, T2, sourceYmin, sourceYmax, 53.381304),
+		n : "Mischief"
+	});
+	PointH.push({
+		x : translateLocation(T1, T2, sourceXmin, sourceXmax, -6.592432),
+		y : translateLocation(T1, T2, sourceYmin, sourceYmax, 53.381074),
+		n : "The Roost"
+	});
+	PointH.push({
+		x : translateLocation(T1, T2, sourceXmin, sourceXmax, -6.603633),
+		y : translateLocation(T1, T2, sourceYmin, sourceYmax, 53.383013),
+		n : "Student Union Bar"
+	});
+	var len = PointH.length;
+	for (var f = 0; f < PointH.length; f++) {
+		context2.beginPath();
+		context2.font = "12px Arial";
+		context2.fillText("🍸", PointH[f].x - 7, PointH[f].y);
+		context2.closePath();
+		context2.beginPath();
+		context2.font = "9px Arial";
+		context2.fillStyle = "black";
+		context2.fillText(PointH[f].n, PointH[f].x - (PointH[f].n.length * 2), PointH[f].y - 13);
+		context2.closePath();
+	}
 }
 img.src = 'images/map.png';
 
@@ -80,6 +116,7 @@ function init() {
 	zoomFunc();
 }
 function showPosition(position) {
+	events();
 	yloc = position.coords.latitude;
 	xloc = position.coords.longitude;
 	getY = position.coords.latitude;
@@ -94,9 +131,10 @@ function showPosition(position) {
 	var sourceX = xloc;
 	var sourceY = yloc;
 
-	xloc = translateLocation(T1, T2, sourceXmin, sourceXmax, sourceX);
+	xloc = translateLocation(T1, T2, sourceXmin, sourceXmax, sourceX)-50;
 	yloc = translateLocation(T1, T2, sourceYmin, sourceYmax, sourceY);
-
+	yourpos(xloc, yloc);
+	console.log(xloc + " " + yloc);
 	PointA.push({
 		x : Math.round(xloc),
 		y : Math.round(yloc),
@@ -106,20 +144,22 @@ function showPosition(position) {
 		b : 0
 	});
 
-	var username = "Ross Halpin";
+	var username = "User";
 	var usrnm = username.replace(/(\B[a-z])|(\s)/g, '');
 
+	context.imageSmoothingEnabled = false;
 	context.drawImage(imageObj, 0, 0, 2000, 2000);
-	context2.beginPath();
-	context2.arc(xloc, yloc, 12, 0, 2 * Math.PI, false);
-	context2.fillStyle = '#4286f4';
-	context2.fill();
-	context2.lineWidth = 2;
-	context2.strokeStyle = 'white';
-	context2.stroke();
-	context2.font = "11px Arial";
-	context2.fillStyle = "white";
-	context2.fillText(usrnm[0], xloc - 4, yloc + 4);
+	context7.beginPath();
+	context7.arc(xloc, yloc, 8, 0, 2 * Math.PI, false);
+	context7.fillStyle = '#4286f4';
+	context7.fill();
+	context7.lineWidth = 2;
+	context7.strokeStyle = 'white';
+	context7.stroke();
+	context7.font = "11px Arial";
+	context7.fillStyle = "white";
+	context7.fillText(usrnm[0], xloc - 4, yloc + 4);
+	context7.closePath();
 
 	$('.panzoom').panzoom('pan', (1000 - xloc) + window.innerWidth / 2, (1000 - yloc) + window.innerHeight / 2);
 }
@@ -200,6 +240,7 @@ function Point1(fx, fy) {
 	context5.lineWidth = 1;
 	context5.strokeStyle = 'black';
 	context5.stroke();
+	context5.closePath();
 	printx = true;
 }
 
@@ -214,11 +255,12 @@ function Point2(fx, fy) {
 	context5.lineWidth = 1;
 	context5.strokeStyle = 'black';
 	context5.stroke();
+	context5.closePath();
 	printx = false;
 }
 
 function drawRoute(x, y, xx, yy) {
-	context4.clearRect(0, 0, canvas4.width, canvas4.height);
+
 	easystar.findPath(x, y, xx, yy, function (path) {
 		if (path != null) {
 			for (i = 0; i < path.length - 1; i++) {
@@ -226,6 +268,7 @@ function drawRoute(x, y, xx, yy) {
 				context4.arc((path[i].x) * sc, (path[i].y) * sc, 2, 0, 2 * Math.PI, false);
 				context4.fillStyle = '#4286f4';
 				context4.fill();
+				context4.closePath();
 			}
 			var dis = Math.round(path.length * 1.79 * 2);
 			document.getElementById("dist").innerHTML = dis + " meters " + Math.round((dis / 1.38) / 60) + " min walk";
@@ -240,11 +283,33 @@ $(document).mouseup(function (e) {
 		var coords = getCanvasCoords(e.clientX - rect.left, e.clientY - rect.top);
 		var incirc = false;
 		for (var i = 0; i < PointE.length; i++) {
-			if (inCircle(PointE[i].x, PointE[i].y, coords.x, coords.y)) {
+			if (inCircle(PointE[i].x, PointE[i].y, coords.x, coords.y, 8) && printx == false) {
 				incirc = true;
-
+				context4.clearRect(0, 0, canvas4.width, canvas4.height);
+				context5.clearRect(0, 0, canvas4.width, canvas4.height);
 				drawRoute(Math.round((PointA[0].x) / 2), Math.round((PointA[0].y) / 2), Math.round((PointE[i].x) / 2), Math.round((PointE[i].y) / 2));
 				centering(PointE[i].x, PointE[i].y);
+
+			}
+		}
+		for (i = 0; i < EvP.length; i += 8) {
+			if (inCircle(EvP[i], EvP[i + 1], coords.x, coords.y, 8) && printx == false) {
+				incirc = true;
+				context4.clearRect(0, 0, canvas4.width, canvas4.height);
+				context5.clearRect(0, 0, canvas4.width, canvas4.height);
+				drawRoute(Math.round((PointA[0].x) / 2), Math.round((PointA[0].y) / 2), Math.round((EvP[i]) / 2), Math.round((EvP[i + 1]) / 2));
+				centering(EvP[i], EvP[i + 1]);
+
+			}
+		}
+
+		for (var i = 0; i < PointH.length; i++) {
+			if (inCircle(PointH[i].x, PointH[i].y, coords.x, coords.y, 12) && printx == false) {
+				incirc = true;
+				context4.clearRect(0, 0, canvas4.width, canvas4.height);
+				context5.clearRect(0, 0, canvas4.width, canvas4.height);
+				drawRoute(Math.round((PointA[0].x) / 2), Math.round((PointA[0].y) / 2), Math.round((PointH[i].x) / 2), Math.round((PointH[i].y) / 2));
+				centering(PointH[i].x, PointH[i].y);
 
 			}
 		}
@@ -254,6 +319,7 @@ $(document).mouseup(function (e) {
 		} else if (printx == true) {
 			Point2(coords.x, coords.y);
 			drawRoute(x1, y1, x2, y2);
+
 		}
 	}
 });
@@ -309,17 +375,23 @@ function search(terms) {
 								var yc = translateLocation(T1, T2, sourceYmin, sourceYmax, sY);
 								Point2(xc, yc);
 								drawRoute(Math.round(xc / 2), Math.round(yc / 2), Math.round(xa / 2), Math.round(ya / 2));
-								context5.beginPath();
-								context5.font = "11px Arial";
-								context5.fillStyle = "black";
-								context5.fillText(srch, xa-(srch.length*2.5), ya-10);
+								if (adr != "Student Union Bar" && adr != "Mischief" && adr != "The Roost" && adr != "Brady's") {
+									context5.beginPath();
+									context5.font = "11px Arial";
+									context5.fillStyle = "black";
+									context5.fillText(srch, xa - (srch.length * 2.5), ya - 10);
+									context5.closePath();
+								}
 							} else {
 								Point1(xa, ya);
 								Point2(xa, ya);
-								context5.beginPath();
-								context5.font = "11px Arial";
-								context5.fillStyle = "black";
-								context5.fillText(srch, xa-(srch.length*2.5), ya-10);
+								if (adr != "Student Union Bar" && adr != "Mischief" && adr != "The Roost" && adr != "Brady's") {
+									context5.beginPath();
+									context5.font = "11px Arial";
+									context5.fillStyle = "black";
+									context5.fillText(srch, xa - (srch.length * 2.5), ya - 10);
+									context5.closePath();
+								}
 							}
 						}
 					}
@@ -352,17 +424,23 @@ function search(terms) {
 								var yc = translateLocation(T1, T2, sourceYmin, sourceYmax, sY);
 								Point2(xc, yc);
 								drawRoute(Math.round(xc / 2), Math.round(yc / 2), Math.round(xa / 2), Math.round(ya / 2));
-								context5.beginPath();
-								context5.font = "11px Arial";
-								context5.fillStyle = "black";
-								context5.fillText(srch, xa-(srch.length*2.5), ya-10);
+								if (adr != "Student Union Bar" && adr != "Mischief" && adr != "The Roost" && adr != "Brady's") {
+									context5.beginPath();
+									context5.font = "11px Arial";
+									context5.fillStyle = "black";
+									context5.fillText(srch, xa - (srch.length * 2.5), ya - 10);
+									context5.closePath();
+								}
 							} else {
 								Point1(xa, ya);
 								Point2(xa, ya);
-								context5.beginPath();
-								context5.font = "11px Arial";
-								context5.fillStyle = "black";
-								context5.fillText(srch, xa-(srch.length*2.5), ya-10);
+								if (adr != "Student Union Bar" && adr != "Mischief" && adr != "The Roost" && adr != "Brady's") {
+									context5.beginPath();
+									context5.font = "11px Arial";
+									context5.fillStyle = "black";
+									context5.fillText(srch, xa - (srch.length * 2.5), ya - 10);
+									context5.closePath();
+								}
 							}
 						}
 					}

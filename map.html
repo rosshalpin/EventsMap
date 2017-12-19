@@ -12,7 +12,7 @@
     <script src="scripts/login.signup.js" defer></script>
     <title>EventMap</title>
 </head>
-<body bgcolor="#E5E3DF" onload="init();getClr();">
+<body bgcolor="#E5E3DF" onload="init();getClr();" id="bd" style="cursor: wait">
     <div class="pn" id="edial">
         <input type="text" title="event name" id="eventName" maxlength="12" size="10" placeholder="Enter Name..." onfocus="this.placeholder = ''" />
         <canvas id="gradient" width="200" height="10"></canvas>
@@ -76,6 +76,7 @@
     </div>
     <div class="image-content">
         <div class="panzoom" id="pnz">
+			<canvas id="layer6" width="2000" height="2000" style="position: absolute; left: 0; top: 0; z-index: 6;"></canvas>
 			<canvas id="layer5" width="2000" height="2000" style="position: absolute; left: 0; top: 0; z-index: 5;"></canvas>
             <canvas id="layer4" width="2000" height="2000" style="position: absolute; left: 0; top: 0; z-index: 3;"></canvas>
             <canvas id="layer3" width="2000" height="2000" style="position: absolute; left: 0; top: 0; z-index: 2;"></canvas>

@@ -97,8 +97,8 @@ function addItem() {
 			var li = document.createElement("li");
 			li.setAttribute('id', "event" + op);
 			li.setAttribute('title', "click to delete");
-			li.appendChild(document.createTextNode(evName.value + " (" + Math.round(coords2.x) + ", " + Math.round(coords2.y)
-					 + ") rgb(" + r + ", " + g + ", " + b + ") " + evTime.value));
+			//li.appendChild(document.createTextNode(evName.value + " (" + Math.round(coords2.x) + ", " + Math.round(coords2.y)+ ") rgb(" + r + ", " + g + ", " + b + ") " + evTime.value));
+			li.appendChild(document.createTextNode(evName.value + " " + evTime.value));
 			//console.log(evName.value + " x: " + Math.round(coords2.x) + " y: " + Math.round(coords2.y)
 			//+ " rgb(" + r +", " + g+", " + b +")" );
 
@@ -111,20 +111,20 @@ function addItem() {
 				g : g,
 				b : b
 			});
-			evCircle(context6, getxa, getya, r, g, b);
+			evCircle(context6, getxa, getya, evName.value, r, g, b);
+			centering(getxa, getya, evName.value, );
+			console.log("ross" + Math.floor(getxa) + " " + Math.floor(getya) + " " + evName.value + " " + r + " " + g + " " + b + " " + evTime.value);
+			uploadE(Math.floor(getxa), Math.floor(getya), evName.value, r, g, b, evTime.value);
 
-			centering(getxa, getya);
 		}
 		evName.value = "";
 		evTime.value = "";
 		evName.setAttribute("placeholder", "Enter Name...");
 
-		//document.getElementById("edial").style.backgroundColor = 'rgb(' + 0 + ',' + 255 + ',' + 255 + ')';
 		resetcol();
 		r = 0;
 		g = 255;
 		b = 255;
-		//console.log(PointE);
 	}
 }
 
@@ -139,35 +139,32 @@ function redraw(x) {
 	}
 }
 
-function inCircle(x, y, mx, my) {
-	if (Math.sqrt((x - mx) * (x - mx) + (y - my) * (y - my)) < 12) {
+function inCircle(x, y, mx, my, n) {
+	if (Math.sqrt((x - mx) * (x - mx) + (y - my) * (y - my)) < n) {
 		return true;
 	} else {
 		return false;
 	}
 }
 
-evCircle = function (ctx, x, y, r, g, b) {
+evCircle = function (ctx, x, y, evName, r, g, b) {
 	ctx.beginPath();
-	ctx.arc(x, y, 12, 0, 2 * Math.PI, false);
+	ctx.arc(x, y, 8, 0, 2 * Math.PI, false);
 	ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
 	ctx.fill();
 	ctx.lineWidth = 2;
 	ctx.strokeStyle = 'white';
 	ctx.stroke();
 	ctx.font = "11px Arial";
-	ctx.fillStyle = "white";
-	ctx.fillText("E", x - 4, y + 4);
-	ctx.closePath();
+	ctx.fillStyle = "black";
+	ctx.fillText(evName, x - evName.length * 2.5, y - 15);
+	ctx.closePath;
+
 };
 
 function resetcol() {
 	document.getElementById("subbut").style.backgroundColor = 'rgb(' + 0 + ',' + 255 + ',' + 255 + ')';
 	document.getElementById("canbut").style.backgroundColor = 'rgb(' + 0 + ',' + 255 + ',' + 255 + ')';
-	//document.getElementById("eventName").style.borderBottom = '3px solid rgb(' + 0 + ',' + 255 + ',' + 255 + ')';
-	//document.getElementById("eventHr").style.borderBottom = '3px solid rgb(' + 0 + ',' + 255 + ',' + 255 + ')';
-	//document.getElementById("eventName").style.color = 'rgb(' + 0 + ',' + 255 + ',' + 255 + ')';
-	//document.getElementById("eventHr").style.color = 'rgb(' + 0 + ',' + 255 + ',' + 255 + ')';
 	rules[0].style.background = 'rgb(' + 0 + ',' + 255 + ',' + 255 + ')';
 
 	document.getElementById("colorRange").value = 100;
@@ -197,17 +194,8 @@ slider.oninput = function () {
 	r = pixelData[(val * 4)];
 	g = pixelData[(val * 4) + 1];
 	b = pixelData[(val * 4) + 2];
-
-	//console.log("R: " + r + " G: " + g + " B: " + b);
-	//document.getElementById("edial").style.backgroundColor = 'rgb(' + r + ',' + g + ',' + b + ')';
 	document.getElementById("subbut").style.backgroundColor = 'rgb(' + r + ',' + g + ',' + b + ')';
 	document.getElementById("canbut").style.backgroundColor = 'rgb(' + r + ',' + g + ',' + b + ')';
-	//document.getElementById("eventName").style.color = 'rgb(' + r + ',' + g + ',' + b + ')';
-	//document.getElementById("eventHr").style.color = 'rgb(' + r + ',' + g + ',' + b + ')';
-	//document.getElementById("eventName").style.borderBottom = '3px solid rgb(' + r + ',' + g + ',' + b + ')';
-	//document.getElementById("eventHr").style.borderBottom = '3px solid rgb(' + r + ',' + g + ',' + b + ')';
-
-
 	rules[0].style.background = 'rgb(' + r + ',' + g + ',' + b + ')';
 }
 
@@ -232,7 +220,6 @@ function getClr() {
 	ctx.fillRect(0, 0, 200, 10);
 
 	pixelData = ctx.getImageData(0, 0, 200, 1).data;
-	//console.log(pixelData);
 }
 
 function centering(x, y) {
