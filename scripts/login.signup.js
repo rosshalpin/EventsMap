@@ -20,7 +20,7 @@ if(login){
     const promise = auth.signInWithEmailAndPassword(email,pass);
     //if successful then relocate to new html page
     promise.then(function(){
-		window.location= "https://ev3ntmap-f8375.firebaseapp.com/map.html";
+		window.location= "map.html";
 		//if unsuccessful print error to console log
 	}).catch(e => console.log(e.message));
 });
@@ -68,7 +68,7 @@ var logout = document.getElementById('btnLogout');
 if(logout){
 	btnLogout.addEventListener('click', e => {
 	    firebase.auth().signOut();
-		window.location="https://ev3ntmap-f8375.firebaseapp.com";
+		window.location="index.html";
 	});
 }
 var user = firebase.auth().currentUser;
