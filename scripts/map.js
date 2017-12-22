@@ -35,7 +35,7 @@ var img = new Image();
 img.onload = function () {
 	context3.drawImage(img, 0, 0, 1000, 1000);
 	var imgData = context3.getImageData(0, 0, canvas3.height, canvas3.width);
-
+	//converting rgb array to multivariable array representing the map
 	for (i = 0; i < canvas3.height; i++) {
 		pixel[i] = new Array();
 		for (j = 0; j < canvas3.width; j++) {
@@ -49,12 +49,14 @@ img.onload = function () {
 		}
 	}
 
+	//initialising easystar
 	easystar.setGrid(pixel);
 	easystar.setAcceptableTiles([1, 0]);
 	easystar.setTileCost(0, 30);
 	easystar.enableDiagonals();
 	easystar.enableCornerCutting();
 
+	//hardcoded locations
 	PointH.push({
 		x : translateLocation(T1, T2, sourceXmin, sourceXmax, -6.590604),
 		y : translateLocation(T1, T2, sourceYmin, sourceYmax, 53.381660),
@@ -76,7 +78,7 @@ img.onload = function () {
 		n : "Student Union Bar"
 	});
 	var len = PointH.length;
-	for (var f = 0; f < PointH.length; f++) {
+	for (var f = 0; f < PointH.length; f++) { //drawing hardcoded positions
 		context2.beginPath();
 		context2.font = "12px Arial";
 		context2.fillText("🍸", PointH[f].x - 7, PointH[f].y);
@@ -116,9 +118,11 @@ function init() {
 	zoomFunc();
 }
 function showPosition(position) {
-	events();
-	yloc = position.coords.latitude;
-	xloc = position.coords.longitude;
+	events(); //download users events and friends events
+	
+	yloc = position.coords.latitude; //get lat
+	xloc = position.coords.longitude; //get long
+	
 	getY = position.coords.latitude;
 	getX = position.coords.longitude;
 
@@ -131,10 +135,12 @@ function showPosition(position) {
 	var sourceX = xloc;
 	var sourceY = yloc;
 
-	xloc = translateLocation(T1, T2, sourceXmin, sourceXmax, sourceX);
-	yloc = translateLocation(T1, T2, sourceYmin, sourceYmax, sourceY);
-	yourpos(xloc, yloc);
-	console.log(xloc + " " + yloc);
+	xloc = translateLocation(T1, T2, sourceXmin, sourceXmax, sourceX); //convert long
+	yloc = translateLocation(T1, T2, sourceYmin, sourceYmax, sourceY); //convert lat
+	
+	yourpos(xloc, yloc); //upload your position
+	
+	//console.log(xloc + " " + yloc);
 	PointA.push({
 		x : Math.round(xloc),
 		y : Math.round(yloc),
@@ -164,7 +170,7 @@ function showPosition(position) {
 	$('.panzoom').panzoom('pan', (1000 - xloc) + window.innerWidth / 2, (1000 - yloc) + window.innerHeight / 2);
 }
 
-function zoomFunc() {
+function zoomFunc() { //implementing panzoom
 	var $panzoom = $('.panzoom').panzoom({});
 
 	$('.panzoom').panzoom('zoom', 1);
@@ -199,7 +205,7 @@ function zoomFunc() {
 	});
 }
 
-function autoComplete() {
+function autoComplete() { //setting autocomplete
 	var options = {
 		url : "data/addresses.js",
 		list : {
@@ -213,7 +219,7 @@ function autoComplete() {
 	$("#txtin").easyAutocomplete(options);
 }
 
-function getCanvasCoords(x, y) {
+function getCanvasCoords(x, y) { //converting transformed panzoom canvas coords 
 	var matrix = $('.panzoom').panzoom("getMatrix");
 	var calc_x = x * (1 / matrix[0]);
 	var calc_y = y * (1 / matrix[3]);
@@ -227,7 +233,7 @@ var x1, y1, x2, y2;
 var printx = false;
 var sc = 2;
 
-function Point1(fx, fy) {
+function Point1(fx, fy) { //drawing a marker at point1(x,y)
 	x1 = Math.round((fx) / sc);
 	y1 = Math.round((fy) / sc);
 
@@ -244,7 +250,7 @@ function Point1(fx, fy) {
 	printx = true;
 }
 
-function Point2(fx, fy) {
+function Point2(fx, fy) { //drawing a marker at point2(x,y)
 	x2 = Math.round(fx / sc);
 	y2 = Math.round(fy / sc);
 
@@ -259,7 +265,7 @@ function Point2(fx, fy) {
 	printx = false;
 }
 
-function drawRoute(x, y, xx, yy) {
+function drawRoute(x, y, xx, yy) { //implementation of easystars pathfinding
 
 	easystar.findPath(x, y, xx, yy, function (path) {
 		if (path != null) {
@@ -284,16 +290,25 @@ $(document).mouseup(function (e) {
 		var incirc = false;
 		for (var i = 0; i < PointE.length; i++) {
 			if (inCircle(PointE[i].x, PointE[i].y, coords.x, coords.y, 8) && printx == false) {
+				/*
+				if the user right clicks within 8 pixel radius of an element in PointE
+				draw route from the position to the users position
+				and center on the PointE element
+				*/
 				incirc = true;
 				context4.clearRect(0, 0, canvas4.width, canvas4.height);
 				context5.clearRect(0, 0, canvas4.width, canvas4.height);
 				drawRoute(Math.round((PointA[0].x) / 2), Math.round((PointA[0].y) / 2), Math.round((PointE[i].x) / 2), Math.round((PointE[i].y) / 2));
 				centering(PointE[i].x, PointE[i].y);
-
 			}
 		}
 		for (i = 0; i < EvP.length; i += 8) {
 			if (inCircle(EvP[i], EvP[i + 1], coords.x, coords.y, 8) && printx == false) {
+				/*
+				if the user right clicks within 8 pixel radius of an element in EvP
+				draw route from the position to the users position
+				and center on the EvP element
+				*/
 				incirc = true;
 				context4.clearRect(0, 0, canvas4.width, canvas4.height);
 				context5.clearRect(0, 0, canvas4.width, canvas4.height);
@@ -305,6 +320,11 @@ $(document).mouseup(function (e) {
 
 		for (var i = 0; i < PointH.length; i++) {
 			if (inCircle(PointH[i].x, PointH[i].y, coords.x, coords.y, 12) && printx == false) {
+				/*
+				if the user right clicks within 12 pixel radius of an element in PointH
+				draw route from the position to the users position
+				and center on the PointH element
+				*/
 				incirc = true;
 				context4.clearRect(0, 0, canvas4.width, canvas4.height);
 				context5.clearRect(0, 0, canvas4.width, canvas4.height);
@@ -326,7 +346,7 @@ $(document).mouseup(function (e) {
 
 var checked = false;
 
-$('input[name="direcCheck"]').on('click', function () {
+$('input[name="direcCheck"]').on('click', function () { //check if get routes checkbox is checked
 	if ($(this).is(':checked')) {
 		checked = true;
 		console.log("checked");
@@ -339,54 +359,57 @@ $('input[name="direcCheck"]').on('click', function () {
 function search(terms) {
 	if (event.key === 'Enter') {
 		var srch = terms.value;
-		var num = srch.replace(/[^0-9]/g, '');
-		var adr = srch.replace(/[0-9]{1,} /g, '');
-		//console.log("num:" + num + "adr:" + adr);
+		var num = srch.replace(/[^0-9]/g, ''); //separate out house number
+		var adr = srch.replace(/[0-9]{1,} /g, ''); //seperate out street address
+		
+		
 		$.getJSON("data/map.geojson", function (json) {
 			for (var i = 0; i < 7271; i++) {
 				try {
-					if (json.features[i].properties.street === adr && json.features[i].properties.housenumber === num) {
-						//console.log(json.features[i].properties.housenumber);
-						var lo = json.features[i].geometry.coordinates[0][0];
-						if (lo == null) {
-							lo = json.features[i].geometry.coordinates;
+					if (json.features[i].properties.street === adr && json.features[i].properties.housenumber === num) { //check if address matches search terms
+					
+						var lo = json.features[i].geometry.coordinates[0][0]; 
+						if (lo == null) { //if the feature does not have the above structure
+							lo = json.features[i].geometry.coordinates; //use this one
 						}
 						//console.log(lo);
 						if (lo != null) {
-							var xa = translateLocation(T1, T2, sourceXmin, sourceXmax, lo[0]);
+							var xa = translateLocation(T1, T2, sourceXmin, sourceXmax, lo[0]); //translate the features coords
 							var ya = translateLocation(T1, T2, sourceYmin, sourceYmax, lo[1]);
+							
+							centering(xa, ya); //center the view on those coords
 
-							centering(xa, ya);
+							if (checked == true) { //if get routes is checked
 
-							if (checked == true) {
+								Point1(xa, ya); //define our first point
 
-								Point1(xa, ya);
-
-								sY = getY;
+								sY = getY; //get users location
 								sX = getX;
 
-								if ((sX < sourceXmax || sX > sourceXmin) && (sY > sourceYmax || sY < sourceYmin)) {
+								if ((sX < sourceXmax || sX > sourceXmin) && (sY > sourceYmax || sY < sourceYmin)) { //if outside maynooth pretend they are
 									//alert("Spoofing coordinates");
 									sY = 53.383813;
 									sX = -6.597999;
 								}
 
-								var xc = translateLocation(T1, T2, sourceXmin, sourceXmax, sX);
+								var xc = translateLocation(T1, T2, sourceXmin, sourceXmax, sX); //translate users location
 								var yc = translateLocation(T1, T2, sourceYmin, sourceYmax, sY);
-								Point2(xc, yc);
-								drawRoute(Math.round(xc / 2), Math.round(yc / 2), Math.round(xa / 2), Math.round(ya / 2));
-								if (adr != "Student Union Bar" && adr != "Mischief" && adr != "The Roost" && adr != "Brady's") {
-									context5.beginPath();
+								Point2(xc, yc); //set second point at users location
+								
+								drawRoute(Math.round(xc / 2), Math.round(yc / 2), Math.round(xa / 2), Math.round(ya / 2)); //drawRoute between both points
+								
+								if (adr != "Student Union Bar" && adr != "Mischief" && adr != "The Roost" && adr != "Brady's") { //if not theses addresses
+									context5.beginPath(); //draw the address name above its marker
 									context5.font = "11px Arial";
 									context5.fillStyle = "black";
 									context5.fillText(srch, xa - (srch.length * 2.5), ya - 10);
 									context5.closePath();
 								}
-							} else {
+							} else { //if get routes is not checked
 								Point1(xa, ya);
-								Point2(xa, ya);
+								Point2(xa, ya);  //draw both points in same place
 								if (adr != "Student Union Bar" && adr != "Mischief" && adr != "The Roost" && adr != "Brady's") {
-									context5.beginPath();
+									context5.beginPath(); //draw the address name above its marker
 									context5.font = "11px Arial";
 									context5.fillStyle = "black";
 									context5.fillText(srch, xa - (srch.length * 2.5), ya - 10);
@@ -396,7 +419,7 @@ function search(terms) {
 						}
 					}
 
-					if (num == "" && json.features[i].properties.name === adr) {
+					if (num == "" && json.features[i].properties.name === adr) { //if it is an address without a number do the same as above but with different structure of json
 						var lo = json.features[i].geometry.coordinates[0][0];
 						if (lo == null) {
 							lo = json.features[i].geometry.coordinates;
@@ -450,7 +473,7 @@ function search(terms) {
 	}
 }
 
-function translateLocation(T1, T2, S1, S2, SourceCoordinate) {
+function translateLocation(T1, T2, S1, S2, SourceCoordinate) { //translating lat,long to x,y
 	var TranslateFactor = (T2 * S1 - T1 * S2) / (S1 - S2)
 	var ScalingFactor = (T2 - T1) / (S2 - S1)
 	var TargetCoordinate = TranslateFactor + ScalingFactor * SourceCoordinate;
@@ -458,11 +481,11 @@ function translateLocation(T1, T2, S1, S2, SourceCoordinate) {
 }
 
 $('body').on('contextmenu', 'div', function (e) {
-	return false;
+	return false; //disable right click menu
 });
 
 $('#nav-toggle').click(function () {
-	$('#friends').toggleClass('menu-open');
+	$('#friends').toggleClass('menu-open'); //animate side bar
 	$('.controls').toggleClass('menu-open');
 	$('body').toggleClass('menu-open');
 });
