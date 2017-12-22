@@ -49,13 +49,11 @@ function uploadE(x, y, name, r, g, b, time) {
 	});
 }
 function downloadE(uid) {
-
-	var u = firebase.auth().currentUser.uid;
 	var a = firebaseRef.child('Events').orderByChild("Admin").equalTo(uid).on("value", function (snapshot) {
 			snapshot.forEach(function (data) {
 				var c = data.key;
 
-				if (!c.startsWith(u)) {
+				if (c.startsWith(uid)) {
 
 					$.each(c.split(/\@/), function (i, val) {
 						if (uid !== val) {
@@ -67,7 +65,9 @@ function downloadE(uid) {
 			});
 
 		});
-	var str = "ev";
+}
+function downloadMy() {
+	var u = firebase.auth().currentUser.uid;
 	var a2 = firebaseRef.child('Events').orderByChild("Admin").equalTo(u).on("value", function (snapshot) {
 			snapshot.forEach(function (data) {
 				var c2 = data.key;
@@ -88,12 +88,6 @@ function downloadE(uid) {
 
 		});
 }
-function Ename(uid) {
-	firebase.database().ref("/Users/" + uid + "/Full_Name").once("value").then(function (snapshot) {
-		var u = snapshot.val();
-		EvP.push(u);
-	});
-}
 function events() {
 	try {
 		var uid = firebase.auth().currentUser.uid;
@@ -111,10 +105,12 @@ function events() {
 				});
 
 			});
+			downloadMy();
 	} catch (e) {
 		location.reload();
 	}
 	setTimeout(function () {
+		
 		friendsEvents();
 		friendspos();
 		document.getElementById("bd").style.cursor = "auto"
@@ -153,24 +149,19 @@ function friendspos() {
 }
 var fLoc = [];
 
-function friendsEvents(){
-for (var h = 0; h < EvP.length; h += 8) {
-	if (EvP[h] == EvP[h + 8]) {
-		EvP.splice(h, 8);
+function friendsEvents() {
+	//console.log(EvP);
+
+	for (var i = 0; i < EvP.length; i += 8) {
+		//console.log("hello" + EvP[i + 1] + " " + EvP[i + 2] + " " + EvPEvP[i + 3] + " " + EvPEvP[i + 4] + " " + EvPEvP[i + 5] + " " + EvPEvP[i + 6]);
+		evCircle(context7, EvP[i], EvP[i + 1], EvP[i + 2], EvP[i + 3], EvP[i + 4], EvP[i + 5]);
+		var ul2 = document.getElementById("dynamic-list");
+		var li2 = document.createElement("li");
+		//li2.setAttribute('title', "click to delete");
+		li2.appendChild(document.createTextNode(EvP[i + 2] + " " + EvP[i + 6] + " " + EvP[i + 7]));
+		ul2.appendChild(li2);
+
 	}
-}
-
-
-for (var i = 0; i < EvP.length; i += 8) {
-	//console.log("hello" + EvP[i + 1] + " " + EvP[i + 2] + " " + EvPEvP[i + 3] + " " + EvPEvP[i + 4] + " " + EvPEvP[i + 5] + " " + EvPEvP[i + 6]);
-	evCircle(context7, EvP[i], EvP[i + 1], EvP[i + 2], EvP[i + 3], EvP[i + 4], EvP[i + 5]);
-	var ul2 = document.getElementById("dynamic-list");
-	var li2 = document.createElement("li");
-	//li2.setAttribute('title', "click to delete");
-	li2.appendChild(document.createTextNode(EvP[i + 2] + " " + EvP[i + 6] + " " + EvP[i + 7]));
-	ul2.appendChild(li2);
-
-}
 }
 
 function drawFriends() {

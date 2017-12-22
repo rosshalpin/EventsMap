@@ -131,7 +131,7 @@ function showPosition(position) {
 	var sourceX = xloc;
 	var sourceY = yloc;
 
-	xloc = translateLocation(T1, T2, sourceXmin, sourceXmax, sourceX)-50;
+	xloc = translateLocation(T1, T2, sourceXmin, sourceXmax, sourceX);
 	yloc = translateLocation(T1, T2, sourceYmin, sourceYmax, sourceY);
 	yourpos(xloc, yloc);
 	console.log(xloc + " " + yloc);
